@@ -1,0 +1,12 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/clock_div.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clock_div
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/colors.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module colors
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/h_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module h_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/v_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module v_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vga_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/tb_vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_vga_counter

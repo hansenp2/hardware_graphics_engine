@@ -1,0 +1,272 @@
+#-----------------------------------------------------------
+# Vivado v2017.4 (64-bit)
+# SW Build 2086221 on Fri Dec 15 20:55:39 MST 2017
+# IP Build 2085800 on Fri Dec 15 22:25:07 MST 2017
+# Start of session at: Tue May  1 13:55:49 2018
+# Process ID: 20044
+# Current directory: C:/Users/Patrick/Documents/TCNJ/senior_project_prep
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent17416 C:\Users\Patrick\Documents\TCNJ\senior_project_prep\vga_counter.xpr
+# Log file: C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vivado.log
+# Journal file: C:/Users/Patrick/Documents/TCNJ/senior_project_prep\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/XilinxVivado/Vivado/2017.4/data/ip'.
+update_compile_order -fileset sources_1
+launch_simulation
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_vga_counter' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_vga_counter_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/colors.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module colors
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/h_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module h_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/v_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module v_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vga_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/tb_vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_vga_counter
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.4
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/XilinxVivado/Vivado/2017.4/bin/unwrapped/win64.o/xelab.exe -wto 54b5f0f711c346e283d0aaadd3b90e1f --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_vga_counter_behav xil_defaultlib.tb_vga_counter xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.h_counter
+Compiling module xil_defaultlib.v_counter
+Compiling module xil_defaultlib.colors
+Compiling module xil_defaultlib.vga_counter
+Compiling module xil_defaultlib.tb_vga_counter
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_vga_counter_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '1' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_vga_counter_behav -key {Behavioral:sim_1:Functional:tb_vga_counter} -tclbatch {tb_vga_counter.tcl} -view {C:/Users/Patrick/Documents/TCNJ/senior_project_prep/tb_vga_counter_behav.wcfg} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2017.4
+Time resolution is 1 ps
+open_wave_config C:/Users/Patrick/Documents/TCNJ/senior_project_prep/tb_vga_counter_behav.wcfg
+source tb_vga_counter.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 960000ns
+xsim: Time (s): cpu = 00:00:09 ; elapsed = 00:00:05 . Memory (MB): peak = 766.191 ; gain = 10.047
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_vga_counter_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 960000ns
+launch_simulation: Time (s): cpu = 00:00:12 ; elapsed = 00:00:09 . Memory (MB): peak = 766.191 ; gain = 10.395
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_vga_counter' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_vga_counter_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/colors.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module colors
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/h_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module h_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/v_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module v_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vga_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/tb_vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_vga_counter
+INFO: [USF-XSim-69] 'compile' step finished in '1' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.4
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/XilinxVivado/Vivado/2017.4/bin/unwrapped/win64.o/xelab.exe -wto 54b5f0f711c346e283d0aaadd3b90e1f --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_vga_counter_behav xil_defaultlib.tb_vga_counter xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.h_counter
+Compiling module xil_defaultlib.v_counter
+Compiling module xil_defaultlib.colors
+Compiling module xil_defaultlib.vga_counter
+Compiling module xil_defaultlib.tb_vga_counter
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_vga_counter_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2017.4
+Time resolution is 1 ps
+relaunch_sim: Time (s): cpu = 00:00:06 ; elapsed = 00:00:08 . Memory (MB): peak = 805.793 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_vga_counter' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_vga_counter_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/colors.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module colors
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/h_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module h_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/v_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module v_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vga_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/tb_vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_vga_counter
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.4
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/XilinxVivado/Vivado/2017.4/bin/unwrapped/win64.o/xelab.exe -wto 54b5f0f711c346e283d0aaadd3b90e1f --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_vga_counter_behav xil_defaultlib.tb_vga_counter xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.h_counter
+Compiling module xil_defaultlib.v_counter
+Compiling module xil_defaultlib.colors
+Compiling module xil_defaultlib.vga_counter
+Compiling module xil_defaultlib.tb_vga_counter
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_vga_counter_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2017.4
+Time resolution is 1 ps
+relaunch_sim: Time (s): cpu = 00:00:05 ; elapsed = 00:00:09 . Memory (MB): peak = 805.793 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_vga_counter' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_vga_counter_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/colors.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module colors
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/h_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module h_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/v_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module v_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vga_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/tb_vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_vga_counter
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.4
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/XilinxVivado/Vivado/2017.4/bin/unwrapped/win64.o/xelab.exe -wto 54b5f0f711c346e283d0aaadd3b90e1f --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_vga_counter_behav xil_defaultlib.tb_vga_counter xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.h_counter
+Compiling module xil_defaultlib.v_counter
+Compiling module xil_defaultlib.colors
+Compiling module xil_defaultlib.vga_counter
+Compiling module xil_defaultlib.tb_vga_counter
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_vga_counter_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2017.4
+Time resolution is 1 ps
+relaunch_sim: Time (s): cpu = 00:00:06 ; elapsed = 00:00:09 . Memory (MB): peak = 805.793 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_vga_counter' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_vga_counter_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/colors.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module colors
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/h_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module h_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/v_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module v_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module vga_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.srcs/sources_1/new/tb_vga_counter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_vga_counter
+INFO: [USF-XSim-69] 'compile' step finished in '1' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.4
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/XilinxVivado/Vivado/2017.4/bin/unwrapped/win64.o/xelab.exe -wto 54b5f0f711c346e283d0aaadd3b90e1f --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_vga_counter_behav xil_defaultlib.tb_vga_counter xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.h_counter
+Compiling module xil_defaultlib.v_counter
+Compiling module xil_defaultlib.colors
+Compiling module xil_defaultlib.vga_counter
+Compiling module xil_defaultlib.tb_vga_counter
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot tb_vga_counter_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2017.4
+Time resolution is 1 ps
+relaunch_sim: Time (s): cpu = 00:00:06 ; elapsed = 00:00:10 . Memory (MB): peak = 806.574 ; gain = 0.445
+launch_runs synth_1 -jobs 2
+[Tue May  1 14:26:03 2018] Launched synth_1...
+Run output will be captured here: C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.runs/synth_1/runme.log
+open_run synth_1 -name synth_1
+Design is defaulting to impl run constrset: constrs_1
+Design is defaulting to synth run part: xc7k70tfbv676-1
+INFO: [Project 1-479] Netlist was created with Vivado 2017.4
+INFO: [Device 21-403] Loading part xc7k70tfbv676-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+open_run: Time (s): cpu = 00:00:18 ; elapsed = 00:00:13 . Memory (MB): peak = 1204.430 ; gain = 377.629
+close_design
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+exit
+INFO: [Common 17-206] Exiting Vivado at Tue May  1 15:27:14 2018...

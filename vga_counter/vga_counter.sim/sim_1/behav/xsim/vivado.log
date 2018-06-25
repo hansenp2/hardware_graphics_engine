@@ -1,0 +1,21 @@
+#-----------------------------------------------------------
+# Vivado v2017.4 (64-bit)
+# SW Build 2086221 on Fri Dec 15 20:55:39 MST 2017
+# IP Build 2085800 on Fri Dec 15 22:25:07 MST 2017
+# Start of session at: Tue May  1 13:55:04 2018
+# Process ID: 19284
+# Current directory: C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent14328 C:\Users\Patrick\Documents\TCNJ\senior_project_prep\vga_counter.sim\sim_1\behav\xsim\tb_vga_counter_behav.wdb
+# Log file: C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim/vivado.log
+# Journal file: C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter.sim/sim_1/behav/xsim\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_wave_database {C:\Users\Patrick\Documents\TCNJ\senior_project_prep\vga_counter.sim\sim_1\behav\xsim\tb_vga_counter_behav.wdb}
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/XilinxVivado/Vivado/2017.4/data/ip'.
+open_wave_database: Time (s): cpu = 00:00:11 ; elapsed = 00:00:05 . Memory (MB): peak = 754.262 ; gain = 78.488
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+exit
+INFO: [Common 17-206] Exiting Vivado at Tue May  1 13:55:44 2018...

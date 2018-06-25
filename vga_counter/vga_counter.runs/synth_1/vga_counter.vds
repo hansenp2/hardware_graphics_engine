@@ -1,0 +1,331 @@
+#-----------------------------------------------------------
+# Vivado v2017.4 (64-bit)
+# SW Build 2086221 on Fri Dec 15 20:55:39 MST 2017
+# IP Build 2085800 on Fri Dec 15 22:25:07 MST 2017
+# Start of session at: Sun Jun 24 21:16:54 2018
+# Process ID: 29596
+# Current directory: C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.runs/synth_1
+# Command line: vivado.exe -log vga_counter.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source vga_counter.tcl
+# Log file: C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.runs/synth_1/vga_counter.vds
+# Journal file: C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source vga_counter.tcl -notrace
+Command: synth_design -top vga_counter -part xc7a100tcsg324-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 28412 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 342.449 ; gain = 100.285
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'vga_counter' [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/vga_counter.v:3]
+INFO: [Synth 8-638] synthesizing module 'clock_div' [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/clock_div.v:5]
+INFO: [Synth 8-256] done synthesizing module 'clock_div' (1#1) [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/clock_div.v:5]
+INFO: [Synth 8-638] synthesizing module 'h_counter' [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/h_counter.v:9]
+INFO: [Synth 8-256] done synthesizing module 'h_counter' (2#1) [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/h_counter.v:9]
+INFO: [Synth 8-638] synthesizing module 'v_counter' [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/v_counter.v:9]
+WARNING: [Synth 8-6014] Unused sequential element end_frame_reg was removed.  [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/v_counter.v:30]
+INFO: [Synth 8-256] done synthesizing module 'v_counter' (3#1) [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/v_counter.v:9]
+INFO: [Synth 8-638] synthesizing module 'colors' [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/colors.v:3]
+INFO: [Synth 8-256] done synthesizing module 'colors' (4#1) [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/colors.v:3]
+INFO: [Synth 8-256] done synthesizing module 'vga_counter' (5#1) [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/vga_counter.v:3]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 395.180 ; gain = 153.016
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 395.180 ; gain = 153.016
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7a100tcsg324-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_constraints.xdc]
+Finished Parsing XDC File [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_constraints.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_constraints.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/vga_counter_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/vga_counter_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 738.875 ; gain = 0.000
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:28 ; elapsed = 00:00:30 . Memory (MB): peak = 738.875 ; gain = 496.711
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a100tcsg324-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:28 ; elapsed = 00:00:30 . Memory (MB): peak = 738.875 ; gain = 496.711
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:28 ; elapsed = 00:00:30 . Memory (MB): peak = 738.875 ; gain = 496.711
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5546] ROM "h_sync" won't be mapped to RAM because it is too sparse
+WARNING: [Synth 8-6014] Unused sequential element h_counter_reg was removed.  [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/h_counter.v:27]
+INFO: [Synth 8-5546] ROM "v_sync" won't be mapped to RAM because it is too sparse
+WARNING: [Synth 8-6014] Unused sequential element v_counter_reg was removed.  [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/v_counter.v:28]
+INFO: [Synth 8-4471] merging register 'green_reg[3:0]' into 'red_reg[3:0]' [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/colors.v:20]
+WARNING: [Synth 8-6014] Unused sequential element green_reg was removed.  [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/colors.v:20]
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:28 ; elapsed = 00:00:30 . Memory (MB): peak = 738.875 ; gain = 496.711
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     10 Bit       Adders := 4     
+	   2 Input      1 Bit       Adders := 1     
++---Registers : 
+	               10 Bit    Registers := 2     
+	                4 Bit    Registers := 2     
+	                1 Bit    Registers := 5     
++---Muxes : 
+	   2 Input     10 Bit        Muxes := 8     
+	   2 Input      1 Bit        Muxes := 3     
+	   6 Input      1 Bit        Muxes := 2     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module clock_div 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      1 Bit       Adders := 1     
++---Registers : 
+	                1 Bit    Registers := 2     
++---Muxes : 
+	   2 Input      1 Bit        Muxes := 1     
+Module h_counter 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     10 Bit       Adders := 2     
++---Registers : 
+	               10 Bit    Registers := 1     
+	                1 Bit    Registers := 2     
++---Muxes : 
+	   2 Input     10 Bit        Muxes := 4     
+	   6 Input      1 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 1     
+Module v_counter 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     10 Bit       Adders := 2     
++---Registers : 
+	               10 Bit    Registers := 1     
+	                1 Bit    Registers := 1     
++---Muxes : 
+	   2 Input     10 Bit        Muxes := 4     
+	   6 Input      1 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 1     
+Module colors 
+Detailed RTL Component Info : 
++---Registers : 
+	                4 Bit    Registers := 2     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 240 (col length:80)
+BRAMs: 270 (col length: RAMB18 80 RAMB36 40)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-6014] Unused sequential element hc/h_counter_reg was removed.  [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/h_counter.v:27]
+WARNING: [Synth 8-6014] Unused sequential element vc/v_counter_reg was removed.  [C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.srcs/sources_1/new/v_counter.v:28]
+INFO: [Synth 8-3886] merging instance 'cl/blue_reg[0]' (FDC) to 'cl/blue_reg[2]'
+INFO: [Synth 8-3886] merging instance 'cl/blue_reg[1]' (FDC) to 'cl/blue_reg[2]'
+INFO: [Synth 8-3886] merging instance 'cl/blue_reg[2]' (FDC) to 'cl/red_reg[3]'
+INFO: [Synth 8-3886] merging instance 'cl/red_reg[0]' (FDC) to 'cl/red_reg[3]'
+INFO: [Synth 8-3886] merging instance 'cl/red_reg[1]' (FDC) to 'cl/red_reg[3]'
+INFO: [Synth 8-3886] merging instance 'cl/red_reg[2]' (FDC) to 'cl/red_reg[3]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\cl/red_reg[3] )
+WARNING: [Synth 8-3332] Sequential element (cl/red_reg[3]) is unused and will be removed from module vga_counter.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:30 ; elapsed = 00:00:32 . Memory (MB): peak = 738.875 ; gain = 496.711
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:44 ; elapsed = 00:00:46 . Memory (MB): peak = 738.875 ; gain = 496.711
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 738.875 ; gain = 496.711
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 755.105 ; gain = 512.941
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 755.105 ; gain = 512.941
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 755.105 ; gain = 512.941
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 755.105 ; gain = 512.941
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 755.105 ; gain = 512.941
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 755.105 ; gain = 512.941
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 755.105 ; gain = 512.941
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-----+------+
+|      |Cell |Count |
++------+-----+------+
+|1     |BUFG |     1|
+|2     |LUT1 |     3|
+|3     |LUT2 |     5|
+|4     |LUT3 |     3|
+|5     |LUT4 |     4|
+|6     |LUT5 |     8|
+|7     |LUT6 |    15|
+|8     |FDCE |    13|
+|9     |FDPE |    13|
+|10    |IBUF |     3|
+|11    |OBUF |    14|
++------+-----+------+
+
+Report Instance Areas: 
++------+---------+----------+------+
+|      |Instance |Module    |Cells |
++------+---------+----------+------+
+|1     |top      |          |    82|
+|2     |  cd     |clock_div |     4|
+|3     |  cl     |colors    |     1|
+|4     |  hc     |h_counter |    30|
+|5     |  vc     |v_counter |    29|
++------+---------+----------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 755.105 ; gain = 512.941
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 6 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:27 ; elapsed = 00:00:38 . Memory (MB): peak = 755.105 ; gain = 169.246
+Synthesis Optimization Complete : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 755.105 ; gain = 512.941
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 3 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+INFO: [Common 17-83] Releasing license: Synthesis
+32 Infos, 7 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 755.543 ; gain = 525.551
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Patrick/Documents/TCNJ/senior_project_prep/vga_counter/vga_counter.runs/synth_1/vga_counter.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file vga_counter_utilization_synth.rpt -pb vga_counter_utilization_synth.pb
+report_utilization: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.063 . Memory (MB): peak = 755.543 ; gain = 0.000
+INFO: [Common 17-206] Exiting Vivado at Sun Jun 24 21:17:54 2018...
