@@ -3,7 +3,7 @@
 `define DIV_CONST 4
 
 /* clock_div
-    divide clock by factor of 2
+    divide clock by factor of 4
     
     Inputs:
         clk_i       : input clock signal
@@ -37,10 +37,8 @@ module clock_div(
                 counter <= 0;
             end
             
-            else
-            begin
-                counter <= counter + 1;
-            end
+            else 
+                counter <= counter + 1; 
         end
         
     end
