@@ -1,0 +1,4 @@
+.vscode
+
+generate_mem_init_file/*.coe
+generate_mem_init_file/img_from_mem.py
