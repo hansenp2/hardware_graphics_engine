@@ -13,7 +13,9 @@ module fill_rect_engine(
     output  [3:0]   arb_out_wben,
     input           arb_in_rtr,
     output          arb_out_rts,
-    output          arb_out_op
+    output          arb_out_op,
+    input   [31:0]  arb_bcast_in_data,
+    input           arb_bcast_in_xfc
     );
     
     wire            cmd_fifo_rtr;
@@ -21,8 +23,8 @@ module fill_rect_engine(
     wire    [7:0]   cmd_fifo_data;
     
     fifo  #(.DATA_WIDTH(8),
-            .DEPTH(16),
-            .LOG2DEPTH(8)) fifo_ut(
+            .DEPTH(32),
+            .LOG2DEPTH(5)) fifo_ut(
             .clk(clk),
             .rst_(rst_),
             // Input Interface
