@@ -89,6 +89,7 @@ module fill_rect_engine_tb(
             // --------- Command #2
             
             fill_rect_arb_rtr = 1'b1;
+            cmd_proc_fill_rect_rts = 1'b1;
             cmd_proc_fil_rect_data = 8'h00;
             #`CLK;
             cmd_proc_fil_rect_data = 8'h00;

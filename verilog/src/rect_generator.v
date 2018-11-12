@@ -67,7 +67,7 @@ module rect_generator(
             cur_addr <= 17'h0000;
             rgb_idx <= 2'b00;
 
-            dec_state <= `DECODE_STATE_IDLE;
+            dec_state <= `DECODE_STATE_ORIGX_B1;
             gen_state <= `GEN_STATE_IDLE;
             calc_state <= `CALC_STATE_IDLE;
         end
@@ -82,7 +82,10 @@ module rect_generator(
                     case (dec_state)
                         `DECODE_STATE_IDLE:
                         begin
-                            dec_state <= `DECODE_STATE_ORIGX_B1;
+                            if (cmd_fifo_xfc)
+                            begin
+                                dec_state <= `DECODE_STATE_ORIGX_B1;
+                            end
                         end
                         `DECODE_STATE_ORIGX_B1:
                         begin
@@ -164,7 +167,7 @@ module rect_generator(
 
                             // Done decoding a command
                             cmd_fifo_rtr <= 1'b0;
-                            dec_state <= `DECODE_STATE_IDLE;
+                            dec_state <= `DECODE_STATE_ORIGX_B1;
                         end
                     endcase
 
