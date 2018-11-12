@@ -6,12 +6,6 @@ module arbitor(
 clk,
 rst_,
 
-softrst_addr,
-softrst_wrdata,
-softrst_rts_in,
-softrst_rtr_out,
-softrst_op,
-
 //inputs
 fetch_addr,
 fetch_wrdata, //not used
@@ -39,10 +33,10 @@ mem_data_out,
 
 //for debugging
 sel,
-softrst_xfc,
 fetch_xfc,
 rectanglefill_xfc,
 rectanglepix_xfc,
+priority_check,
 
 //read-back outputs
 bcast_data,
@@ -69,20 +63,7 @@ bcast_xfc
     
     //wrap round_robin around when shifted to the last possible bit, update when round robin is changed
     assign next_round_robin = (round_robin < (1 << (NUM_ENGINES-1))) ? (round_robin << 1):3'b001;
-    
-    
-    //connections to soft rest
-    input [16:0] softrst_addr;
-    input [31:0] softrst_wrdata; //not used 
-    input softrst_rts_in;
-    output softrst_rtr_out; 
-    input [3:0] softrst_op; 
-    output wire softrst_xfc; //output for debugging
-    
-    assign softrst_rtr_out = 1;
-    
-    assign softrst_xfc = softrst_rtr_out & softrst_rts_in;
-    
+
     //connections to fetcher
     input [16:0] fetch_addr;
     input [31:0] fetch_wrdata; //not used 
@@ -133,7 +114,7 @@ bcast_xfc
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     
-    wire priority_check;
+    output wire priority_check;
     wire [NUM_ENGINES-1:0] priority_x;
     reg [NUM_ENGINES-1:0] priority;
     
@@ -237,25 +218,11 @@ bcast_xfc
            counter = 0;
            sel = 3'b000;
         end
-        
-        //softreset doesn't wait for it's turn, highest priority
-        else if(softrst_xfc) begin
-            wben <= softrst_op;
-            mem_addr <= softrst_addr;
-            mem_data_out <= softrst_wrdata;
-            delay_bcast_xfc <= 0;
-        end
-        
+  
+      
         else begin
         
             counter <= counter + 1;
-            
-            //i think this is obsolete
-            /*
-            if(!(counter < 15)) begin 
-                counter <= 0;
-            end
-            */
             
             //fetcher should be allowed to pull data at least once every other cycle to make sure it does not run out of data, skip if fetcher doesnt need anything
             if((counter < 1) || !fetch_rts_in) begin
