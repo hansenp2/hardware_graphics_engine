@@ -159,10 +159,10 @@ wr_addr
         begin
 
             if (in_xfc)
-                
+            begin    
                 queue[wr_addr] <= in_data;
                 wr_addr <= next_wr_addr;
-                
+            end    
           
 
             if (out_xfc)
