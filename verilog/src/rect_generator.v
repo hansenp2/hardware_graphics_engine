@@ -1,17 +1,16 @@
 `timescale 1ns / 1ps
 
-`define DECODE_STATE_IDLE       0
-`define DECODE_STATE_ORIGX_B1   1
-`define DECODE_STATE_ORIGX_B2   2
-`define DECODE_STATE_ORIGY_B1   3
-`define DECODE_STATE_ORIGY_B2   4
-`define DECODE_STATE_WID_B1     5
-`define DECODE_STATE_WID_B2     6
-`define DECODE_STATE_HGT_B1     7
-`define DECODE_STATE_HGT_B2     8
-`define DECODE_STATE_R          9
-`define DECODE_STATE_G          10
-`define DECODE_STATE_B          11
+`define DECODE_STATE_ORIGX_B1   0
+`define DECODE_STATE_ORIGX_B2   1
+`define DECODE_STATE_ORIGY_B1   2
+`define DECODE_STATE_ORIGY_B2   3
+`define DECODE_STATE_WID_B1     4
+`define DECODE_STATE_WID_B2     5
+`define DECODE_STATE_HGT_B1     6
+`define DECODE_STATE_HGT_B2     7
+`define DECODE_STATE_R          8
+`define DECODE_STATE_G          9
+`define DECODE_STATE_B          10
 
 `define CALC_STATE_IDLE         0
 `define CALC_STATE_ROW_IDX      1
@@ -80,13 +79,6 @@ module rect_generator(
             begin
                     // ----------------- Decode Instruction State Machine
                     case (dec_state)
-                        `DECODE_STATE_IDLE:
-                        begin
-                            if (cmd_fifo_xfc)
-                            begin
-                                dec_state <= `DECODE_STATE_ORIGX_B1;
-                            end
-                        end
                         `DECODE_STATE_ORIGX_B1:
                         begin
                             if (cmd_fifo_xfc)
@@ -112,7 +104,6 @@ module rect_generator(
                         end
                         `DECODE_STATE_ORIGY_B2:
                         begin
-                            // Store y origin data
                             origy[7:0] <= cmd_fifo_data;
                             dec_state <= `DECODE_STATE_WID_B1;
                         end
@@ -124,7 +115,6 @@ module rect_generator(
                         end
                         `DECODE_STATE_WID_B2:
                         begin
-                            // Store width of box
                             wid[7:0] <= cmd_fifo_data;
                             dec_state <= `DECODE_STATE_HGT_B1;
                         end
@@ -139,7 +129,6 @@ module rect_generator(
                         end
                         `DECODE_STATE_HGT_B2:
                         begin
-                            // Store hight of box
                             hgt[7:0] <= cmd_fifo_data;
                             dec_state <= `DECODE_STATE_R;
                         end
