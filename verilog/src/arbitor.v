@@ -246,7 +246,7 @@ bcast_xfc
                 counter <= 0;
             end
             
-        end
+       
         
      
         case (sel)
@@ -290,6 +290,7 @@ bcast_xfc
           endcase
           delay2_bcast_xfc <= delay_bcast_xfc;
           bcast_xfc <= delay2_bcast_xfc;
+          end
     end
     
 endmodule
