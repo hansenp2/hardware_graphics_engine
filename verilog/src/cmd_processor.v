@@ -47,5 +47,6 @@ module cmd_processor(
     end
     assign bcast_out_data = i2c_in_data;
     assign i2c_rtr = (engine_in_rtr) ? 1'b1 : 1'b0;
+    assign xfc = engine_in_rtr & engine_out_rts;
 endmodule
 

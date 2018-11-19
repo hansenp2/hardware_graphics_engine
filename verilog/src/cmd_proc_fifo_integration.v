@@ -31,8 +31,10 @@ module cmd_proc_fifo_integration(
         .engine_in_rtr(cmd_proc_rtr),
         .bcast_out_data(cmd_proc_bcast_data)
         );
+        
     wire fifo_rtr;  
     wire fifo_rts;
+    
     fifo #(.DATA_WIDTH(8),
            .DEPTH(16),
            .LOG2DEPTH(4)) fifo(
@@ -47,9 +49,7 @@ module cmd_proc_fifo_integration(
         .out_rtr(generator_rtr),
         .out_rts(generator_rts)
         );
-        
-    
-    
+          
     assign cmd_proc_rtr = {1'b0, 1'b0, 1'b0, fifo_rtr, 1'b0};
     assign fifo_rts = cmd_proc_rts[1];   
 endmodule

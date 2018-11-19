@@ -112,7 +112,7 @@ module tb_cmd_proc_fifo_integration(
             i2c_rts     = 1'b1;
             #`CLK;
             i2c_rts     = 1'b0;
-            #`CLK;
+            #`I2C_DELAY;
             // Command 2: Fill Rect Engine X,Y => (32,32) WID = 128, HGT = 128, R = 0, G = 15, B = 0
             cmd         = 8'h1;
             i2c_in_data = 8'h1;             // X[15:8]
@@ -179,7 +179,7 @@ module tb_cmd_proc_fifo_integration(
             i2c_rts     = 1'b1;
             #`CLK;
             i2c_rts     = 1'b0;   
-            #`CLK;
+            #`I2C_DELAY;
             // Command 3: Fill Rect Engine X,Y => (32,32) WID = 256, HGT = 256, R = 0, G = 0, B = 15
             cmd         = 8'h1;
             i2c_in_data = 8'h1;             // X[15:8]
