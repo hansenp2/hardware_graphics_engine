@@ -22,7 +22,7 @@ module fill_rect_engine(
     wire            cmd_fifo_rts;
     wire    [7:0]   cmd_fifo_data;
     
-    fifo  #(.DATA_WIDTH(8),
+    fifo #(.DATA_WIDTH(8),
             .DEPTH(32),
             .LOG2DEPTH(5)) fifo_ut(
             .clk(clk),

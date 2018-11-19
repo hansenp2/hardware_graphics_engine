@@ -6,10 +6,12 @@ module cmd_processor(
     input           clk,
     input           rst_,
     input   [7:0]   cmd,
-    input   [15:0]  i2c_in_data,
-    output reg [4:0]engine_out_rts,
+    input           i2c_rts,
+    output          i2c_rtr,
+    input   [7:0]   i2c_in_data,
+    output  reg[4:0]engine_out_rts,
     input   [4:0]   engine_in_rtr,
-    output reg[15:0]bcast_out_data
+    output  [7:0]   bcast_out_data
     );
 
     wire    [4:0]   xfc;
@@ -18,34 +20,32 @@ module cmd_processor(
     
     // Set RTR and RTS so that the 2d engines knows when
     // to sample the engine_data_out bus 
-    always @(cmd)
+    always @(*)
     begin
-        engine_out_rts = 5'b00000;
-        case (cmd)
-            8'h0:
-                // Test Pat Op
-                engine_out_rts[0] <= 1'b1;
-            8'h1:
-                engine_out_rts[1] <= 1'b1;
-            8'h2:
-                engine_out_rts[2] <= 1'b1;
-            8'h3:
-                engine_out_rts[3] <= 1'b1;
-            8'h4:
-                engine_out_rts[4] <= 1'b1;
-        endcase
-        
-    end
-    
-    always @(posedge clk)
-    begin
-        if (!rst_)
+        engine_out_rts <= 5'b00000;
+        if (i2c_rts && engine_in_rtr)
+        begin
+            case (cmd)
+                8'h0:
+                    // Test Pat Op
+                    engine_out_rts[0] <= 1'b1;
+                8'h1:
+                    // Fill Rect Engine
+                    engine_out_rts[1] <= 1'b1;
+                8'h2:
+                    engine_out_rts[2] <= 1'b1;
+                8'h3:
+                    engine_out_rts[3] <= 1'b1;
+                8'h4:
+                    engine_out_rts[4] <= 1'b1;
+            endcase
+        end
+        else
         begin
             engine_out_rts <= 5'b00000;
         end
-        
-        bcast_out_data <= i2c_in_data;
     end
-    
+    assign bcast_out_data = i2c_in_data;
+    assign i2c_rtr = (engine_in_rtr) ? 1'b1 : 1'b0;
 endmodule
 
