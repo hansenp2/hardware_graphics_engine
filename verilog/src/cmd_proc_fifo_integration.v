@@ -9,9 +9,10 @@ module cmd_proc_fifo_integration(
     );
     
     wire                i2c_rtr;
-    wire    [4:0]       engine_rtr;
-    wire    [4:0]       engine_rts;
+    
     wire    [7:0]       cmd_proc_bcast_data;
+    wire    [4:0]       cmd_proc_rtr;
+    wire    [4:0]       cmd_proc_rts;
     
     wire    [7:0]       generator_data;
     wire                generator_rtr;
@@ -25,26 +26,30 @@ module cmd_proc_fifo_integration(
         .i2c_in_data(i2c_in_data),
         .i2c_rts(i2c_rts),
         .i2c_rtr(i2c_rtr),
-        // Engine Out Interface
-        .engine_out_rts(engine_rts),
-        .engine_in_rtr(engine_rtr),
+        // Engine Interface
+        .engine_out_rts(cmd_proc_rts),
+        .engine_in_rtr(cmd_proc_rtr),
         .bcast_out_data(cmd_proc_bcast_data)
         );
-        
+    wire fifo_rtr;  
+    wire fifo_rts;
     fifo #(.DATA_WIDTH(8),
            .DEPTH(16),
            .LOG2DEPTH(4)) fifo(
         .clk(clk),
         .rst_(rst_),
-        // Input Interface
+        // Cmd Proc Interface
         .in_data(cmd_proc_bcast_data),
-        .in_rtr(engine_rtr[1]),
-        .in_rts(engine_rts[1]),
-        // Output Interface
+        .in_rtr(fifo_rtr),
+        .in_rts(fifo_rts),
+        // Generator Interface
         .out_data(generator_data),
         .out_rtr(generator_rtr),
         .out_rts(generator_rts)
         );
         
-        
+    
+    
+    assign cmd_proc_rtr = {1'b0, 1'b0, 1'b0, fifo_rtr, 1'b0};
+    assign fifo_rts = cmd_proc_rts[1];   
 endmodule
