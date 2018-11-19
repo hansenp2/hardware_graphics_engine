@@ -53,7 +53,7 @@ module rect_generator(
     reg     [15:0]  col_cnt;
     reg     [15:0]  row_cnt;
 
-
+    reg             stall_on_decode_await;
     always @(posedge clk or negedge rst_)
     begin
         if (!rst_)
@@ -75,7 +75,7 @@ module rect_generator(
 
         // For the generator to begin outputting addresses and data the arbiter must
         // be ready to recieve and the fifo must be ready to send
-            if (arb_rtr)// && cmd_fifo_rts)
+            if (cmd_fifo_xfc)//arb_rtr && stall_on_decode_await)// && cmd_fifo_rts)
             begin
                     // ----------------- Decode Instruction State Machine
                     case (dec_state)
@@ -137,11 +137,6 @@ module rect_generator(
                             // Store R pixel data
                             r_val <=  cmd_fifo_data;
                             dec_state <= `DECODE_STATE_G;
-
-                            // Assert that the generator will be able
-                            // to send data on the next cycle because thats when we will
-                            // have the R value to be sent
-                            arb_rts <= 1'b1;
                         end
                         `DECODE_STATE_G:
                         begin
@@ -157,6 +152,11 @@ module rect_generator(
                             // Done decoding a command
                             cmd_fifo_rtr <= 1'b0;
                             dec_state <= `DECODE_STATE_ORIGX_B1;
+                            gen_state <= `GEN_STATE_DRIVE;
+                            // Assert that the generator will be able
+                            // to send data on the next cycle because thats when we will
+                            // have the R value to be sent
+                            arb_rts <= 1'b1;
                         end
                     endcase
 
@@ -176,56 +176,92 @@ module rect_generator(
                         begin
                             // Calculate the beinging starting address using the begining y offset
                             cur_addr <= ((cur_addr + origy) >> 3) * 3;
-                            gen_state <= `GEN_STATE_DRIVE;
                             calc_state <= `CALC_STATE_IDLE;
                         end
-                    endcase
+                    endcase     
+            end
+        end
+    end
 
-                    // ------------------ Generation State Machine
-                    case (gen_state)
-                        `GEN_STATE_IDLE:
+    always @(posedge clk or negedge rst_)
+    begin
+        if (!rst_)
+        begin
+            gen_state <= `GEN_STATE_IDLE;
+        end
+        else if (gen_state)
+        begin
+            // ------------------ Generation State Machine
+            case (gen_state)
+                `GEN_STATE_IDLE:
+                begin
+                // Default idle state
+                end
+                `GEN_STATE_DRIVE:
+                begin
+                    // State to drive the increment the addresses and counters
+                    // that are used to determin wben bits and rgb mem indexing
+                    if ((col_cnt == (wid - 1'b1)) && (row_cnt == (hgt - 1'b1)) && (rgb_idx == 2'b10))
+                    begin
+                        gen_state <= `GEN_STATE_IDLE;
+                        cmd_fifo_rtr <= 1'b1;
+                        arb_rts <= 1'b0;
+                        col_cnt <= 1'b0;
+                        row_cnt <= 1'b0;
+                        rgb_idx <= 1'b0;
+                        cur_addr <= 17'h0000;
+                    end
+                    else
+                    begin
+                        if (rgb_idx == 2'b10)
                         begin
-                            // Default idle state
-                        end
-                        `GEN_STATE_DRIVE:
-                        begin
-                            // State to drive the increment the addresses and counters
-                            // that are used to determin wben bits and rgb mem indexing
-                            if ((col_cnt == (wid - 1'b1)) && (row_cnt == (hgt - 1'b1)) && (rgb_idx == 2'b10))
-                            begin
-                                gen_state <= `GEN_STATE_IDLE;
-                                cmd_fifo_rtr <= 1'b1;
-                                arb_rts <= 1'b0;
+                            if (col_cnt == (wid - 1'b1)) // If we are on the final column we want reset some counters and
+                            begin // increment the addr to the next row
                                 col_cnt <= 1'b0;
-                                row_cnt <= 1'b0;
-                                rgb_idx <= 1'b0;
-                                cur_addr <= 17'h0000;
+                                cur_addr <= cur_addr + 240 - 2'b10;
+                                row_cnt <= row_cnt + 1'b1;
                             end
                             else
                             begin
-                                if (rgb_idx == 2'b10)
-                                begin
-                                    if (col_cnt == (wid - 1'b1)) // If we are on the final column we want reset some counters and
-                                    begin // increment the addr to the next row
-                                        col_cnt <= 1'b0;
-                                        cur_addr <= cur_addr + 240 - 2'b10;
-                                        row_cnt <= row_cnt + 1'b1;
-                                    end
-                                    else
-                                    begin
-                                        cur_addr <= cur_addr - 2'b10;
-                                        col_cnt <= col_cnt + 1'b1;
-                                    end
-                                    rgb_idx <= 2'b00;
-                                end
-                                else
-                                begin
-                                    rgb_idx <= rgb_idx + 1'b1;
-                                    cur_addr <= cur_addr + 1'b1;
-                                end
+                                cur_addr <= cur_addr - 2'b10;
+                                col_cnt <= col_cnt + 1'b1;
                             end
+                            rgb_idx <= 2'b00;
                         end
-                    endcase
+                        else
+                        begin
+                            rgb_idx <= rgb_idx + 1'b1;
+                            cur_addr <= cur_addr + 1'b1;
+                        end
+                    end
+                end
+            endcase       
+        end
+    end
+
+
+    // Decode Await Stalling Logic
+    //  Stalls state machines until all data is available
+    reg     [4:0]   field_cnt;
+    always @(posedge clk or negedge rst_)
+    begin
+        if (!rst_)
+        begin
+            field_cnt <= 3'b000;
+            stall_on_decode_await <= 1'b1;
+        end
+        else
+        begin
+            if (gen_state)
+            begin
+                if (field_cnt == 4'd11)
+                begin
+                    stall_on_decode_await <= 1'b0;
+                end
+                else
+                begin
+                    field_cnt <= field_cnt + 1'b1;
+                end
             end
         end
     end
