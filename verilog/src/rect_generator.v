@@ -75,22 +75,22 @@ module rect_generator(
 
         // For the generator to begin outputting addresses and data the arbiter must
         // be ready to recieve and the fifo must be ready to send
-            if (cmd_fifo_xfc)//arb_rtr && stall_on_decode_await)// && cmd_fifo_rts)
+        if (cmd_fifo_xfc)//arb_rtr && stall_on_decode_await)// && cmd_fifo_rts)
+        begin
+        // ----------------- Decode Instruction State Machine
+            case (dec_state)
+            `DECODE_STATE_ORIGX_B1:
             begin
-                    // ----------------- Decode Instruction State Machine
-                    case (dec_state)
-                        `DECODE_STATE_ORIGX_B1:
-                        begin
-                            if (cmd_fifo_xfc)
-                            begin
+                if (cmd_fifo_xfc)
+                begin
                                 // Store X origin data
                                 origx[15:8] <= cmd_fifo_data;
 
                                 // Initiate Calculation State machine to begin calculating
                                 // row index addresses from the X origin data
                                 dec_state <= `DECODE_STATE_ORIGX_B2;
-                            end
-                        end
+                end
+            end
                         `DECODE_STATE_ORIGX_B2:
                         begin
                             origx[7:0] <= cmd_fifo_data;
@@ -272,10 +272,55 @@ module rect_generator(
     assign arb_data = color_data << rgb_shift;
 
     // WBEN logic
-    assign arb_wben = 4'h1 << (col_cnt >> 1);
+    assign arb_wben = 4'h1 << ((col_cnt%8) >> 1);
     assign arb_addr = cur_addr;
 
     // XFC logic
     assign cmd_fifo_xfc = cmd_fifo_rtr & cmd_fifo_rts;
     assign arb_xfc = arb_rtr & arb_rts;
+    
+    
+    
+    always @(posedge clk or negedge rst_)
+    begin
+        if (!rsnt_)
+        begin
+            
+        end
+    end
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 endmodule

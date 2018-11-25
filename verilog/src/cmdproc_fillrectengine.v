@@ -24,12 +24,6 @@ module cmd_processor_engines_integration(
     wire    [4:0]   cmd_proc_engines_rtr;
     wire            fill_rect_engine_rtr;
     wire            fill_rect_engine_rts;
-        
-    // Psuedo I2C Engine
-    always @(posedge clk or negedge rst_)
-    begin
-        
-    end
     
     cmd_processor cmd_processor(
         .clk(clk),
@@ -44,8 +38,6 @@ module cmd_processor_engines_integration(
         .engine_in_rtr(cmd_proc_engines_rtr),
         .bcast_out_data(cmd_proc_bcast_data)
         );
-      
-
         
     fill_rect_engine rect_fill_engine(
         .clk(clk),
