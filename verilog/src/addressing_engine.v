@@ -10,15 +10,15 @@ module addressing_engine(
     // Decode Engine Interface
     input   [3:0]   decode_eng_state,
     input   [15:0]  cmd_data_origx,
-    input   [15:0]  cmd_data_origy
+    input   [15:0]  cmd_data_origy,
     // Generation Engine Interface
     output reg[3:0] addr_eng_state,
     output reg[15:0]init_addr
-    )
+    );
 
     always @(posedge clk or negedge rst_)
     begin
-        if !(rst_)
+        if (!rst_)
         begin
             addr_eng_state <= `ADDR_STATE_IDLE;
             init_addr <= 16'h00;
@@ -34,15 +34,17 @@ module addressing_engine(
                 `ADDR_STATE_ROW_IDX:
                 begin
                     // Calculate the starting row index address in mem
-                    init_addr <= origx * 640;
+                    init_addr <= cmd_data_origx * 640;
                     addr_eng_state <= `ADDR_STATE_START_ADDR;
                 end
                 `ADDR_STATE_START_ADDR:
                 begin
                     // Calculate the beinging starting address using the begining y offset
-                    init_addr <= ((init_addr + origy) >> 3) * 3;
+                    init_addr <= ((init_addr + cmd_data_origy) >> 3) * 3;
                     addr_eng_state <= `ADDR_STATE_IDLE;
                 end
             endcase
         end
     end
+    
+endmodule

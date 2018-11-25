@@ -93,7 +93,7 @@ module fill_rect_engine(
         
     wire    [15:0]  init_addr;
     
-    addr_engine addr_eng(
+    addressing_engine addr_eng(
         .clk(clk),
         .rst_(rst_),
         // Command Data Field Engine Interface
