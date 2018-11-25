@@ -1,8 +1,7 @@
 `timescale 1ns / 1ps
 
 `define GEN_STATE_IDLE         0
-`define GEN_STATE_ROW_IDX      1
-`define GEN_STATE_START_ADDR   2
+`define GEN_STATE_DRIVE        1
 
 `define DECODE_STATE_B          10
 
@@ -10,7 +9,7 @@ module fill_rect_data_gen_engine(
     input               clk,
     input               rst_,
     // Addressing Engine Interface
-    input       [4:0]   addr_eng_state,
+    input               fill_rect_data_gen_start_strobe,
     input       [15:0]  init_addr,
     // Command Field Data Interface
     input       [15:0]  cmd_data_hgt,
@@ -19,16 +18,16 @@ module fill_rect_data_gen_engine(
     input       [3:0]   cmd_data_bval,
     input       [3:0]   cmd_data_gval,
     // Fill Rect Decode Engine Interface
-    output  reg [4:0]   fill_rect_data_gen_eng_state,
+    output  reg         fill_rect_decode_start_strobe,
     // Arbiter Output Interface
     output  reg         arb_out_rts,
     input               arb_in_rtr,
-    output  reg [3:0]   arb_out_wben,
+    output      [3:0]   arb_out_wben,
     output  reg [15:0]  arb_out_addr,
-    output  reg [31:0]  arb_out_data,
+    output      [31:0]  arb_out_data,
     output  reg         arb_out_op,
-    input       [31:0]  arb_in_data,
-    input               arb_in_xfc
+    input       [31:0]  arb_bcast_in_data,
+    input               arb_bcast_in_xfc
     );
 
     reg     [3:0]   rgb_idx;
@@ -39,26 +38,35 @@ module fill_rect_data_gen_engine(
     reg     [15:0]  hgt;
     reg     [15:0]  wid;
 
+    wire    [15:0]  color_data;
+    wire    [7:0]   rgb_shift;
+    wire    [3:0]   rval;
+    wire    [3:0]   gval;
+    wire    [3:0]   bval; 
+
+    reg     [3:0]   fill_rect_data_gen_eng_state;
+    reg             fill_rect_decode_start_cond;
+    
     always @(posedge clk or negedge rst_)
     begin
         if (!rst_)
         begin
-            arb_out_wben <= 4'h0;
             arb_out_addr <= 16'h00;
-            arb_out_data <= 32'h0000;
             arb_out_op <= 1'b0;
-
+            fill_rect_decode_start_cond <= 1'b0;
             fill_rect_data_gen_eng_state <= `GEN_STATE_IDLE;
         end
         // Begin data generation when arb is rtr and this module is rts
-        else if (internal_xfc)
+        else if (arb_in_rtr)
         begin
             // ------------------ Generation State Machine
             case (fill_rect_data_gen_eng_state)
                 `GEN_STATE_IDLE:
                 begin
+                    fill_rect_decode_start_cond <= 1'b1;
+                    
                     // Default idle state
-                    if (addr_eng_state == `DECODE_STATE_B)
+                    if (fill_rect_data_gen_start_strobe)
                     begin
                         arb_out_rts <= 1'b1;
                         hgt <= cmd_data_hgt;
@@ -109,7 +117,17 @@ module fill_rect_data_gen_engine(
             endcase
         end
     end
-
-
+    
+    // RGB Index the output data
+    assign rval = cmd_data_rval;
+    assign gval = cmd_data_gval;
+    assign bval = cmd_data_bval;
+    
+    assign arb_out_wben = 4'h1 << ((col_cnt % 8) >> 1);
+    assign color_data = (rgb_idx==1'b0) ? {rval, rval}: (rgb_idx==1'b1) ? {gval, gval} : {bval, bval};
+    assign rgb_shift = (arb_out_wben==8) ? 24: (arb_out_wben==4) ? 16: (arb_out_wben==2) ? 8: 0;
+    assign arb_out_data = color_data << rgb_shift;
+    
+    
     assign internal_xfc = arb_in_rtr & arb_out_rts;
 endmodule

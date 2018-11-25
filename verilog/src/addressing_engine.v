@@ -4,18 +4,22 @@
 `define ADDR_STATE_ROW_IDX      1
 `define ADDR_STATE_START_ADDR   2
 
+`define DECODE_STATE_ORIGY_B2   3
+
 module addressing_engine(
     input           clk,
     input           rst_,
     // Decode Engine Interface
-    input   [3:0]   decode_eng_state,
+    input           addr_start_strobe,
     input   [15:0]  cmd_data_origx,
     input   [15:0]  cmd_data_origy,
     // Generation Engine Interface
-    output reg[3:0] addr_eng_state,
+    output reg[3:0] fill_rect_data_gen_start_strobe,
     output reg[15:0]init_addr
     );
 
+
+    reg    [3:0]   addr_eng_state;
     always @(posedge clk or negedge rst_)
     begin
         if (!rst_)
@@ -30,6 +34,10 @@ module addressing_engine(
                 `ADDR_STATE_IDLE:
                 begin
                     // State Machine defaults to idle
+                    if (addr_start_strobe)
+                    begin
+                        addr_eng_state <= `ADDR_STATE_ROW_IDX;
+                    end
                 end
                 `ADDR_STATE_ROW_IDX:
                 begin

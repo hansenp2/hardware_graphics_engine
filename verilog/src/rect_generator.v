@@ -278,16 +278,7 @@ module rect_generator(
     // XFC logic
     assign cmd_fifo_xfc = cmd_fifo_rtr & cmd_fifo_rts;
     assign arb_xfc = arb_rtr & arb_rts;
-    
-    
-    
-    always @(posedge clk or negedge rst_)
-    begin
-        if (!rsnt_)
-        begin
-            
-        end
-    end
+
     
     
     

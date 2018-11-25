@@ -39,7 +39,7 @@ module cmd_processor_engines_integration(
         .bcast_out_data(cmd_proc_bcast_data)
         );
         
-    fill_rect_engine rect_fill_engine(
+    fill_rect_engine fill_rect_eng(
         .clk(clk),
         .rst_(rst_),
         // Command Processor Interface
