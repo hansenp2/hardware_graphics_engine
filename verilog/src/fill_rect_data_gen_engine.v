@@ -31,15 +31,14 @@ module fill_rect_data_gen_engine(
     input               arb_in_xfc
     );
 
-
     reg     [3:0]   rgb_idx;
     reg     [15:0]  col_cnt;
     reg     [15:0]  row_cnt;
-    
+
     wire            internal_xfc;
     reg     [15:0]  hgt;
     reg     [15:0]  wid;
-    
+
     always @(posedge clk or negedge rst_)
     begin
         if (!rst_)
@@ -78,7 +77,7 @@ module fill_rect_data_gen_engine(
                         col_cnt <= 1'b0;
                         row_cnt <= 1'b0;
                         rgb_idx <= 1'b0;
-                        
+
                         arb_out_addr <= 16'h0000;
                         arb_out_rts <= 1'b0;
                         fill_rect_data_gen_eng_state <= `GEN_STATE_IDLE;
@@ -110,7 +109,7 @@ module fill_rect_data_gen_engine(
             endcase
         end
     end
-    
-    
+
+
     assign internal_xfc = arb_in_rtr & arb_out_rts;
 endmodule
