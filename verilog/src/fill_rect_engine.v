@@ -64,20 +64,19 @@ module fill_rect_engine(
     wire    [3:0]   cmd_data_rval;
     wire    [3:0]   cmd_data_gval;
     wire    [3:0]   cmd_data_bval;
-    
-    wire            fill_rect_data_gen_start_strobe;
-    wire            fill_rect_decode_start_strobe;
-    wire            addr_start_strobe;
         
+    wire            dec_eng_has_data;
+    wire            data_gen_is_idle;
     fill_rect_decode_engine dec_eng(
         .clk(clk),
         .rst_(rst_),
+        // Pipeline Stall Interface
+        .dec_eng_has_data(dec_eng_has_data),
+        .data_gen_is_idle(data_gen_is_idle),
         // Command Fifo Interface
         .cmd_fifo_rtr(cmd_fifo_rtr),
         .cmd_fifo_rts(cmd_fifo_rts),
         .cmd_fifo_data(cmd_fifo_data),
-        // Fill Rect Data Gen Engine INterface
-        .fill_rect_decode_start_strobe(fill_rect_decode_start_strobe),
         // Command Data Field Outputs 
         .cmd_data_origx(cmd_data_origx),
         .cmd_data_origy(cmd_data_origy),
@@ -85,9 +84,7 @@ module fill_rect_engine(
         .cmd_data_hgt(cmd_data_hgt),
         .cmd_data_rval(cmd_data_rval),
         .cmd_data_gval(cmd_data_gval),
-        .cmd_data_bval(cmd_data_bval),
-        // Addressing Engine Interface
-        .addr_start_strobe(addr_start_strobe)
+        .cmd_data_bval(cmd_data_bval)
         );
         
         
@@ -100,17 +97,17 @@ module fill_rect_engine(
         .cmd_data_origx(cmd_data_origx),
         .cmd_data_origy(cmd_data_origy),
         // Fill Rect Decode Engine Interface
-        .addr_start_strobe(addr_start_strobe),
         // Generation Engine Interface
-        .fill_rect_data_gen_start_strobe(fill_rect_data_gen_start_strobe),
         .init_addr(init_addr)
         );
     
     fill_rect_data_gen_engine data_gen_eng(
         .clk(clk),
         .rst_(rst_),
+        // Pipeline Stall Interface
+        .dec_eng_has_data(dec_eng_has_data),
+        .data_gen_is_idle(data_gen_is_idle),
         // Addressing Engine Interface
-        .fill_rect_data_gen_start_strobe(fill_rect_data_gen_start_strobe),
         .init_addr(init_addr),
         // Fill Rect Data Field Interface
         .cmd_data_wid(cmd_data_wid),
@@ -118,8 +115,6 @@ module fill_rect_engine(
         .cmd_data_rval(cmd_data_rval),
         .cmd_data_gval(cmd_data_gval),
         .cmd_data_bval(cmd_data_bval),
-        // Fill Rect Decode Engine Interface
-        .fill_rect_decode_start_strobe(fill_rect_decode_start_strobe),
         // Arbiter Interface
         .arb_out_rts(arb_out_rts),
         .arb_in_rtr(arb_in_rtr),

@@ -8,6 +8,9 @@
 module fill_rect_data_gen_engine(
     input               clk,
     input               rst_,
+    // Pipeline Stall Interface
+    input               dec_eng_has_data,
+    output              data_gen_is_idle,
     // Addressing Engine Interface
     input               fill_rect_data_gen_start_strobe,
     input       [15:0]  init_addr,
@@ -17,8 +20,6 @@ module fill_rect_data_gen_engine(
     input       [3:0]   cmd_data_rval,
     input       [3:0]   cmd_data_bval,
     input       [3:0]   cmd_data_gval,
-    // Fill Rect Decode Engine Interface
-    output  reg         fill_rect_decode_start_strobe,
     // Arbiter Output Interface
     output  reg         arb_out_rts,
     input               arb_in_rtr,
@@ -45,7 +46,8 @@ module fill_rect_data_gen_engine(
     wire    [3:0]   bval; 
 
     reg     [3:0]   fill_rect_data_gen_eng_state;
-    reg             fill_rect_decode_start_cond;
+    
+    wire            data_gen_sm_start_cond;
     
     always @(posedge clk or negedge rst_)
     begin
@@ -53,8 +55,15 @@ module fill_rect_data_gen_engine(
         begin
             arb_out_addr <= 16'h00;
             arb_out_op <= 1'b0;
-            fill_rect_decode_start_cond <= 1'b0;
             fill_rect_data_gen_eng_state <= `GEN_STATE_IDLE;
+            rgb_idx <= 4'h0;
+            col_cnt <= 16'h00;
+            row_cnt <= 16'h00;
+            hgt <= 16'h00;
+            wid <= 16'h00;
+            arb_out_rts <= 1'b0;
+            arb_out_addr <= 16'h00;
+            arb_out_op <= 1'b0;
         end
         // Begin data generation when arb is rtr and this module is rts
         else if (arb_in_rtr)
@@ -63,10 +72,9 @@ module fill_rect_data_gen_engine(
             case (fill_rect_data_gen_eng_state)
                 `GEN_STATE_IDLE:
                 begin
-                    fill_rect_decode_start_cond <= 1'b1;
                     
                     // Default idle state
-                    if (fill_rect_data_gen_start_strobe)
+                    if (data_gen_sm_start_cond)
                     begin
                         arb_out_rts <= 1'b1;
                         hgt <= cmd_data_hgt;
@@ -130,4 +138,7 @@ module fill_rect_data_gen_engine(
     
     
     assign internal_xfc = arb_in_rtr & arb_out_rts;
+    
+    assign data_gen_is_idle = (fill_rect_data_gen_eng_state == `GEN_STATE_IDLE);
+    assign data_gen_sm_start_cond = dec_eng_has_data;
 endmodule

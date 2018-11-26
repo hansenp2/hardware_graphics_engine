@@ -14,7 +14,6 @@ module addressing_engine(
     input   [15:0]  cmd_data_origx,
     input   [15:0]  cmd_data_origy,
     // Generation Engine Interface
-    output reg[3:0] fill_rect_data_gen_start_strobe,
     output reg[15:0]init_addr
     );
 
@@ -34,7 +33,7 @@ module addressing_engine(
                 `ADDR_STATE_IDLE:
                 begin
                     // State Machine defaults to idle
-                    if (addr_start_strobe)
+                    if (1'b1)
                     begin
                         addr_eng_state <= `ADDR_STATE_ROW_IDX;
                     end

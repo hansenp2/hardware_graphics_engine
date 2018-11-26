@@ -15,12 +15,13 @@
 module fill_rect_decode_engine(
     input               clk,
     input               rst_,
+    // Pipeline Stall Interface
+    input               data_gen_is_idle,
+    output              dec_eng_has_data,
     // Command Fifo Interface
     output  reg         cmd_fifo_rtr,
     input               cmd_fifo_rts,
     input       [7:0]   cmd_fifo_data,
-    // Fill Rect Generation Engine Interface
-    input               fill_rect_decode_start_strobe,
     // Command Field Data Interface
     output  reg [15:0]  cmd_data_origx,
     output  reg [15:0]  cmd_data_origy,
@@ -28,14 +29,13 @@ module fill_rect_decode_engine(
     output  reg [15:0]  cmd_data_hgt,
     output  reg [3:0]   cmd_data_rval,
     output  reg [3:0]   cmd_data_gval,
-    output  reg [3:0]   cmd_data_bval,
-    // Addressing Engine Interface
-    output  reg         addr_start_strobe
+    output  reg [3:0]   cmd_data_bval
     );
 
-    reg [1:0]   rgb_idx;
-    reg [3:0]   dec_state;
-    wire        cmd_fifo_xfc;
+    reg     [1:0]   rgb_idx;
+    reg     [3:0]   dec_state;
+    wire            cmd_fifo_xfc;
+    wire            decode_sm_start_cond;
     
     always @(posedge clk or negedge rst_)
     begin
@@ -44,7 +44,14 @@ module fill_rect_decode_engine(
             // reset logic
             cmd_fifo_rtr <= 1'b1;
             rgb_idx <= 2'b00;
-            addr_start_strobe <= 1'b0;
+            cmd_data_origx <= 16'h00;
+            cmd_data_origy <= 16'h00;
+            cmd_data_wid <=  16'h00;
+            cmd_data_hgt <= 16'h00;
+            cmd_data_rval <= 4'h0;
+            cmd_data_bval <= 4'h0;
+            cmd_data_gval <= 4'h0;
+            
             dec_state <= `DECODE_STATE_ORIGX_B1;
         end
         else
@@ -58,7 +65,7 @@ module fill_rect_decode_engine(
                 case (dec_state)
                     `DECODE_STATE_ORIGX_B1:
                     begin
-                        if (fill_rect_decode_start_strobe)
+                        if (decode_sm_start_cond)
                         begin
                             // Store X origin data
                             cmd_data_origx[15:8] <= cmd_fifo_data;
@@ -82,13 +89,11 @@ module fill_rect_decode_engine(
                     `DECODE_STATE_ORIGY_B2:
                     begin
                         cmd_data_origy[7:0] <= cmd_fifo_data;
-                        addr_start_strobe <= 1'b1;
                         dec_state <= `DECODE_STATE_WID_B1;
                     end
                     `DECODE_STATE_WID_B1:
                     begin
                         // Store width of box
-                        addr_start_strobe <= 1'b0;
                         cmd_data_wid[15:8] <= cmd_fifo_data;
                         dec_state <= `DECODE_STATE_WID_B2;
                     end
@@ -102,9 +107,6 @@ module fill_rect_decode_engine(
                         // Store hight of box
                         cmd_data_hgt[15:8] <= cmd_fifo_data;
                         dec_state <= `DECODE_STATE_HGT_B2;
-
-                        // Start up calc state machine so multiplication is ready when we want to output
-                        //calc_state <= `CALC_STATE_ROW_IDX;
                     end
                     `DECODE_STATE_HGT_B2:
                     begin
@@ -138,5 +140,7 @@ module fill_rect_decode_engine(
     end
 
     assign cmd_fifo_xfc = cmd_fifo_rtr & cmd_fifo_rts;
-
+    
+    assign dec_eng_has_data = (dec_state >= `DECODE_STATE_G); 
+    assign decode_sm_start_cond = data_gen_is_idle;
 endmodule
