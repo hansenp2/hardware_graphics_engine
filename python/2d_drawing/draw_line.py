@@ -6,7 +6,7 @@ import scipy.misc
 
 ON = 255
 
-def draw_line(image_array, start_point, end_point):
+def draw_line(image_array, start_point, end_point, verbose=False):
 
     # Change in x & y
     dx = abs(start_point[0] - end_point[0])
@@ -38,7 +38,7 @@ def draw_line(image_array, start_point, end_point):
                     i += 1
                 e -= dx
             e += dy
-            print(j, i, e)
+            # print(j, i, e)
 
     # y-axis is the Driving Axis (DA)
     # x-axis is the Passive Axis (PA)
@@ -66,3 +66,18 @@ def draw_line(image_array, start_point, end_point):
                     j += 1
                 e -= dy
             e += dx
+
+if __name__ == '__main__':
+    
+    # Define image
+    IMAGE_HGT = 240
+    IMAGE_WDT = 320 
+    IMAGE_ARR = np.zeros([IMAGE_HGT, IMAGE_WDT])
+
+    # Draw some lines
+    draw_line(IMAGE_ARR, (0,0), (90,25))
+    draw_line(IMAGE_ARR, (200,20), (90,25))
+    draw_line(IMAGE_ARR, (50,60), (90,25))
+
+    # Save Image
+    scipy.misc.imsave('img/line.png', IMAGE_ARR)

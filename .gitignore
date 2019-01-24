@@ -2,3 +2,5 @@
 
 python/generate_mem_init_file/*.coe
 python/generate_mem_init_file/img_from_mem.py
+
+python/2d_drawing/img
