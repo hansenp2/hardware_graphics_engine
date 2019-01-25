@@ -16,6 +16,8 @@ module tb_line_drawer;
     
     reg in_rts;
     wire in_rtr; 
+    wire out_rts;                    
+    reg out_rtr; 
     
     // Unit Under Test
     line_drawer uut(
@@ -27,7 +29,9 @@ module tb_line_drawer;
         .y2_in(y2_in),        
         .color(color),
         .in_rts(in_rts),
-        .in_rtr(in_rtr)
+        .in_rtr(in_rtr),
+        .out_rts(out_rts),
+        .out_rtr(out_rtr)
     );
     
     initial 
@@ -36,20 +40,27 @@ module tb_line_drawer;
         clk     = 1'b0;
         rst_    = 1'b1;
         
-        x1_in   = 0;
-        y1_in   = 4;
+        x1_in   = 4;
+        y1_in   = 0;
         
         x2_in   = 0;
-        y2_in   = 0;
+        y2_in   = 10;
         
         color   = 0;
         
-        in_rts  = 1;
+        out_rtr = 1;
         
         #10;
         
         #5 rst_ = ~rst_; clk = ~clk;
         #5 rst_ = ~rst_; clk = ~clk;
+        
+        #5; 
+            in_rts  = 1;
+            clk = ~clk;
+        #5; 
+            in_rts  = 0;
+            clk = ~clk;
         
         repeat(200)
         begin
