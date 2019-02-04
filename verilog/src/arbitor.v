@@ -288,8 +288,9 @@ bcast_xfc
                                    delay_bcast_xfc <= 0;
                          end
           endcase
-          delay2_bcast_xfc <= delay_bcast_xfc;
-          bcast_xfc <= delay2_bcast_xfc;
+          //delay2_bcast_xfc <= delay_bcast_xfc;
+          //bcast_xfc <= delay2_bcast_xfc;
+          bcast_xfc <= delay_bcast_xfc;
           end
     end
     
