@@ -13,7 +13,9 @@ module data_fetching_engine(
     
     output  [11:0]  out_data,
     input           out_rtr,
-    output          out_rts 
+    output          out_rts, 
+    
+    input           bcast_xfc
     );
     
 //    wire df_rtr_mem; 
@@ -35,7 +37,8 @@ module data_fetching_engine(
         .g_rts(g_rts_gb),
         .g_rtr(gb_rtr_g), 
         .b_rts(b_rts_bb),
-        .b_rtr(bb_rtr_b)
+        .b_rtr(bb_rtr_b),
+        .bcast_xfc(bcast_xfc)
     );
     
     wire [31:0] r_data, g_data, b_data; 
@@ -94,3 +97,4 @@ module data_fetching_engine(
     );
     
 endmodule
+

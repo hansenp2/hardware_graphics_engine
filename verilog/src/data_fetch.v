@@ -24,7 +24,9 @@ module data_fetch(
     input           g_rtr,
     
     output          b_rts,
-    input           b_rtr
+    input           b_rtr,
+    
+    input           bcast_xfc
     
     // DEBUG CODE
 //    output [31:0] q0, q1,
@@ -91,9 +93,14 @@ module data_fetch(
         
             if (in_xfc)
             begin
-                queue[wr_addr[0]]   <= in_data;
-                wr_addr             <= wr_addr + 1;                
+                              
                 mem_ptr             <= (mem_ptr == `NUM_ADDRS-1) ? (0) : (mem_ptr + 1); 
+            end
+            
+            if (bcast_xfc)
+            begin
+                queue[wr_addr[0]]   <= in_data;
+                wr_addr             <= wr_addr + 1;  
             end
                 
             if (r_xfc)

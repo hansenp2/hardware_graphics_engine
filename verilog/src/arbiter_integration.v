@@ -46,7 +46,7 @@ module arbiter_integration(
     wire [16:0] df_mem_ptr;
     wire arb_rts_df;
     wire [31:0] arb_bcast_data;
-    wire bcast_xfc;
+    wire [2:0] bcast_xfc;
     
     // Data Fetching Engine
     data_fetching_engine df(
@@ -56,10 +56,11 @@ module arbiter_integration(
         .in_addr(df_mem_ptr),
         .in_data(arb_bcast_data),
         .in_rtr(df_rtr_mem),
-        .in_rts(bcast_xfc),                  
+        .in_rts(arb_rts_df),                  
         .out_data(current_pixel),
         .out_rtr(active_video),
-        .out_rts(df_rts_rf)
+        .out_rts(df_rts_rf),
+        .bcast_xfc(bcast_xfc[0])
     );
     
     wire [31:0] mem_data_out;
@@ -88,13 +89,14 @@ module arbiter_integration(
         .rectanglepix_rts_in(0),
         .rectanglepix_rtr_out(rectanglepix_rtr_out),
         .rectanglepix_op(0),
-
+        
+        /*
         //for debugging
         .sel(sel),
         .fetch_xfc(fetch_xfc),
         .rectanglefill_xfc(rectanglefill_xfc),
         .rectanglepix_xfc(rectanglepix_xfc),
-        
+        */
         
         .mem_data_in(data_from_mem),
         .wben(wben),
