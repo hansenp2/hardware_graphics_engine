@@ -11,8 +11,17 @@ module test_fetch_engine_hw(
     output              vga_v_sync,     
     output  [3:0]       vga_red, 
     output  [3:0]       vga_green, 
-    output  [3:0]       vga_blue        
+    output  [3:0]       vga_blue,
+     
+    input               i2c_sda_raw, i2c_scl_raw, i2c_sda_out,
+    output [7:0]        o_anode,
+    output [6:0]        o_cathode
     );
+    wire  [7:0]        i2c_data;
+    wire  [7:0]        i2c_addr;
+    wire  [3:0]        i2c_deserial_state;
+    wire               i2c_xfc_write;
+    wire               i2c_rts;
     
     // Clock Divider
     wire clk25;        
@@ -25,11 +34,14 @@ module test_fetch_engine_hw(
     // Refresh Engine
     wire active_video, en_fetching;
     wire [11:0] current_pixel;
+    assign current_pixel = 12'ha00;
+    wire host_test_mode;
+    
     refresh_engine rf(
         .clk(clk25),
         .rst_(rst_),
         .enable(enable),
-        .test_mode(test_mode),
+        .test_mode(test_mode | host_test_mode),
         .current_pixel(current_pixel),
         .vga_h_sync(vga_h_sync), 
         .vga_v_sync(vga_v_sync), 
@@ -68,7 +80,7 @@ module test_fetch_engine_hw(
     end
     
     // Data Fetching Engine
-    data_fetching_engine df(
+    /*data_fetching_engine df(
         .clk(clk25),
         .rst_(rst_),
         .en_fetching(en_fetching),        
@@ -79,8 +91,8 @@ module test_fetch_engine_hw(
         .out_data(current_pixel),
         .out_rtr(active_video),
         .out_rts(df_rts_rf)
-    );
-    
+    );*/
+    /*
     // Block RAM Module
     bram_wrapper bw(
         .BRAM_PORTA_0_addr(df_mem_ptr),
@@ -89,7 +101,40 @@ module test_fetch_engine_hw(
         .BRAM_PORTA_0_dout(data_from_mem),
         .BRAM_PORTA_0_we(0)
     );
-
+    */
+    wire [4:0]  engine_rts;
+    wire [4:0]  engine_rtr;
+    wire [7:0]  bcast_out_data;
+    
+    i2c_engine i2c_eng(
+        .clk(clk),
+        .rst_n(rst_),
+        .i2c_sda_raw(i2c_sda_raw),
+        .i2c_scl_raw(i2c_scl_raw),
+        .i2c_sda_out(i2c_sda_out),
+        .o_anode(o_anode),
+        .o_cathode(o_cathode),
+        .i2c_deserial_state(i2c_deserial_state),
+        .i2c_data(i2c_data),
+        .i2c_addr(i2c_addr),
+        .i2c_xfc_write(i2c_xfc_write),
+        .i2c_rts(i2c_rts)
+        );
+        
+    wire i2c_rtr;
+    cmd_processor cmd_proc(
+            .clk(clk),
+            .rst_(rst_),
+            .cmd(i2c_addr),
+            .i2c_rts(i2c_rts),
+            .i2c_rtr(i2c_rtr),
+            .i2c_in_data(i2c_data),
+            .engine_out_rts(engine_rts),
+            .engine_in_rtr(engine_rtr),
+            .bcast_out_data(bcast_out_data)
+            );  
+            
+    assign host_test_mode = engine_rts[0];
 
     // INFERRED BRAM USED FOR SIMULATION ONLY
     // mem_for_testing mt(

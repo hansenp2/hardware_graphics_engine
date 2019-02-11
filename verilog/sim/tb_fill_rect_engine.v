@@ -26,7 +26,7 @@ module fill_rect_engine_tb(
         #`CLK;
         RESET = 1;
     end
-    
+    wire rst_ = RESET;
     //  Command Processor <-> Fill Rect Engine Interface
     reg     [7:0]   cmd_proc_fil_rect_data;
     reg             cmd_proc_fill_rect_rts;
@@ -55,6 +55,23 @@ module fill_rect_engine_tb(
         .arb_out_op(fill_rect_arb_op)
         );
         
+    integer file; 
+    always @(fill_rect_arb_addr)
+    begin
+        if (!rst_)
+        begin
+            file = $fopen("../../../../result.dat", "w");  
+        end
+        else
+        begin
+            if (fill_rect_arb_rts)
+            begin
+                $fwrite(file, 
+                        fill_rect_arb_addr);
+            end
+        end
+    end
+            
     initial
         begin
             cmd_proc_fill_rect_rts = 1'b0;
@@ -64,11 +81,11 @@ module fill_rect_engine_tb(
             fill_rect_arb_rtr = 1'b1;
             cmd_proc_fil_rect_data = 8'h00;
             #`CLK;
-            cmd_proc_fil_rect_data = 8'h20;
+            cmd_proc_fil_rect_data = 8'h00;
             #`CLK;
             cmd_proc_fil_rect_data = 8'h00;
             #`CLK;
-            cmd_proc_fil_rect_data = 8'h20;
+            cmd_proc_fil_rect_data = 8'h00;
             #`CLK;
             cmd_proc_fil_rect_data = 8'h00;
             #`CLK;
@@ -76,7 +93,7 @@ module fill_rect_engine_tb(
             #`CLK;
             cmd_proc_fil_rect_data = 8'h00;
             #`CLK;
-            cmd_proc_fil_rect_data = 8'h01;
+            cmd_proc_fil_rect_data = 8'h04;
             #`CLK;
             cmd_proc_fil_rect_data = 8'h01;
             #`CLK;
@@ -87,7 +104,7 @@ module fill_rect_engine_tb(
             cmd_proc_fill_rect_rts = 1'b0;
             #`CLK;
             // --------- Command #2
-
+            /**
             fill_rect_arb_rtr = 1'b1;
             cmd_proc_fill_rect_rts = 1'b1;
             cmd_proc_fil_rect_data = 8'h00;
@@ -113,5 +130,6 @@ module fill_rect_engine_tb(
             cmd_proc_fil_rect_data = 16'h09;  
             #`CLK;
             cmd_proc_fill_rect_rts = 1'b0;
+            **/
         end
 endmodule

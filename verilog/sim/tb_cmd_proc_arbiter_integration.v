@@ -72,49 +72,49 @@ module tb_cmd_processor_engines_integration(
                 i2c_rts     = 1'b1;
                 // Command 1:  Fill Rect Engine X,Y => (0,0) WID = 4, HGT = 4, R = 15, G = 0, B = 0
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // X[15:8]
+                i2c_in_data = 8'h0;             // X[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // X[7:0]
+                i2c_in_data = 8'h0;             // X[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // Y[15:8]
+                i2c_in_data = 8'h0;             // Y[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // Y[7:0]
+                i2c_in_data = 8'h0;             // Y[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // WID[15:8]
+                i2c_in_data = 8'h0;             // WID[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;        
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h04;             // WID[7:0]
+                i2c_in_data = 8'h4;             // WID[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;        
                 #`I2C_DELAY;    
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // HGT[15:8]
+                i2c_in_data = 8'h0;             // HGT[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;        
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h04;             // HGT[7:0]
+                i2c_in_data = 8'h4;             // HGT[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
@@ -137,51 +137,51 @@ module tb_cmd_processor_engines_integration(
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
-                // Command 2: Fill Rect Engine X,Y => (32,32) WID = 4, HGT = 4, R = 0, G = 15, B = 0
+                // Command 2: Fill Rect Engine X,Y => (32,32) WID = 128, HGT = 128, R = 0, G = 15, B = 0
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // X[15:8]
+                i2c_in_data = 8'h1;             // X[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h20;             // X[7:0]
+                i2c_in_data = 8'h0;             // X[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // Y[15:8]
+                i2c_in_data = 8'h1;             // Y[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h20;             // Y[7:0]
+                i2c_in_data = 8'h0;             // Y[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // WID[15:8]
+                i2c_in_data = 8'h4;             // WID[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;        
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h04;             // WID[7:0]
+                i2c_in_data = 8'h0;             // WID[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;        
                 #`I2C_DELAY;    
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // HGT[15:8]
+                i2c_in_data = 8'h4;             // HGT[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;        
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h04;             // HGT[7:0]
+                i2c_in_data = 8'h0;             // HGT[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
@@ -206,49 +206,49 @@ module tb_cmd_processor_engines_integration(
                 #`I2C_DELAY;
                 // Command 3: Fill Rect Engine X,Y => (32,32) WID = 256, HGT = 256, R = 0, G = 0, B = 15
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // X[15:8]
+                i2c_in_data = 8'h1;             // X[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h10;             // X[7:0]
+                i2c_in_data = 8'h0;             // X[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // Y[15:8]
+                i2c_in_data = 8'h1;             // Y[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h10;             // Y[7:0]
+                i2c_in_data = 8'h0;             // Y[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h01;             // WID[15:8]
+                i2c_in_data = 8'h8;             // WID[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;        
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // WID[7:0]
+                i2c_in_data = 8'h0;             // WID[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;        
                 #`I2C_DELAY;    
                 cmd         = 8'h1;
-                i2c_in_data = 8'h01;             // HGT[15:8]
+                i2c_in_data = 8'h8;             // HGT[15:8]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;        
                 #`I2C_DELAY;
                 cmd         = 8'h1;
-                i2c_in_data = 8'h00;             // HGT[7:0]
+                i2c_in_data = 8'h0;             // HGT[7:0]
                 i2c_rts     = 1'b1;
                 #`CLK;
                 i2c_rts     = 1'b0;

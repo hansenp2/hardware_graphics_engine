@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 `define CLK 20
-`define I2C_DELAY 400
+`define I2C_DELAY 0
 
 module command_processor_tb(
 
