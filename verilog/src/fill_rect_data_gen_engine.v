@@ -129,10 +129,10 @@ module fill_rect_data_gen_engine(
     assign gval = cmd_data_gval;
     assign bval = cmd_data_bval;
     
-    assign arb_out_wben = 4'h1 << ((col_cnt % 8) >> 1);
-    assign color_data = (rgb_idx==1'b0) ? {rval, rval}: (rgb_idx==1'b1) ? {gval, gval} : {bval, bval};
+    assign v  = 4'h1 << ((col_cnt % 8) >> 1);
+    assign color_data = (rgb_idx==1'b0) ? rval: (rgb_idx==1'b1) ? gval : bval;
     assign rgb_shift = (arb_out_wben==8) ? 24: (arb_out_wben==4) ? 16: (arb_out_wben==2) ? 8: 0;
-    assign arb_out_data = color_data << rgb_shift;
+    assign arb_out_data = (color_data << rgb_shift) << ((col_cnt % 2) << 2);
     
     
     assign internal_xfc = arb_in_rtr & arb_out_rts;
