@@ -36,23 +36,7 @@ module fill_rect_engine(
             .out_rtr(cmd_fifo_rtr),
             .out_rts(cmd_fifo_rts),
             .out_data(cmd_fifo_data)
-            );
-    /*        
-    rect_generator generator_ut(
-            .clk(clk),
-            .rst_(rst_),
-            // Command Processor FIFO Interface
-            .cmd_fifo_data(cmd_fifo_data),
-            .cmd_fifo_rtr(cmd_fifo_rtr),
-            .cmd_fifo_rts(cmd_fifo_rts),
-            // Arbiter FIFO Interface
-            .arb_data(arb_out_data),
-            .arb_addr(arb_out_addr),
-            .arb_wben(arb_out_wben),
-            .arb_rts(arb_out_rts),
-            .arb_rtr(arb_in_rtr)
-            );
-    */    
+            );  
      
    // Command Data Fields       
    //   (values will not get over written until a command has been completed)
@@ -67,6 +51,9 @@ module fill_rect_engine(
         
     wire            dec_eng_has_data;
     wire            data_gen_is_idle;
+    
+    wire            addr_start_strobe;
+    wire            gen_start_strobe;
     fill_rect_decode_engine dec_eng(
         .clk(clk),
         .rst_(rst_),
@@ -84,7 +71,8 @@ module fill_rect_engine(
         .cmd_data_hgt(cmd_data_hgt),
         .cmd_data_rval(cmd_data_rval),
         .cmd_data_gval(cmd_data_gval),
-        .cmd_data_bval(cmd_data_bval)
+        .cmd_data_bval(cmd_data_bval),
+        .addr_start_strobe(addr_start_strobe)
         );
         
         
@@ -97,8 +85,10 @@ module fill_rect_engine(
         .cmd_data_origx(cmd_data_origx),
         .cmd_data_origy(cmd_data_origy),
         // Fill Rect Decode Engine Interface
+        .addr_start_strobe(addr_start_strobe),
         // Generation Engine Interface
-        .init_addr(init_addr)
+        .init_addr(init_addr),
+        .gen_start_strobe(gen_start_strobe)
         );
     
     fill_rect_data_gen_engine data_gen_eng(
@@ -109,6 +99,7 @@ module fill_rect_engine(
         .data_gen_is_idle(data_gen_is_idle),
         // Addressing Engine Interface
         .init_addr(init_addr),
+        .gen_start_strobe(gen_start_strobe),
         // Fill Rect Data Field Interface
         .cmd_data_wid(cmd_data_wid),
         .cmd_data_hgt(cmd_data_hgt),

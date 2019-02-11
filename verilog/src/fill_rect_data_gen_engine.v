@@ -3,16 +3,14 @@
 `define GEN_STATE_IDLE         0
 `define GEN_STATE_DRIVE        1
 
-`define DECODE_STATE_B          10
-
 module fill_rect_data_gen_engine(
     input               clk,
     input               rst_,
     // Pipeline Stall Interface
-    input               dec_eng_has_data,
+    input               dec_eng_has_data,//dead
     output              data_gen_is_idle,
     // Addressing Engine Interface
-    input               fill_rect_data_gen_start_strobe,
+    input               gen_start_strobe,
     input       [15:0]  init_addr,
     // Command Field Data Interface
     input       [15:0]  cmd_data_hgt,
@@ -23,7 +21,7 @@ module fill_rect_data_gen_engine(
     // Arbiter Output Interface
     output  reg         arb_out_rts,
     input               arb_in_rtr,
-    output      [3:0]   arb_out_wben,
+    output      [3:0]   arb_out_wben ,
     output  reg [15:0]  arb_out_addr,
     output      [31:0]  arb_out_data,
     output  reg         arb_out_op,
@@ -53,7 +51,6 @@ module fill_rect_data_gen_engine(
     begin
         if (!rst_)
         begin
-            arb_out_addr <= 16'h00;
             arb_out_op <= 1'b0;
             fill_rect_data_gen_eng_state <= `GEN_STATE_IDLE;
             rgb_idx <= 4'h0;
@@ -79,6 +76,7 @@ module fill_rect_data_gen_engine(
                         arb_out_rts <= 1'b1;
                         hgt <= cmd_data_hgt;
                         wid <= cmd_data_wid;
+                        arb_out_addr <= init_addr;
 
                         fill_rect_data_gen_eng_state <= `GEN_STATE_DRIVE;
                     end
@@ -125,20 +123,20 @@ module fill_rect_data_gen_engine(
             endcase
         end
     end
-    
+
     // RGB Index the output data
     assign rval = cmd_data_rval;
     assign gval = cmd_data_gval;
     assign bval = cmd_data_bval;
     
-    assign arb_out_wben = 4'h1 << ((col_cnt % 8) >> 1);
-    assign color_data = (rgb_idx==1'b0) ? {rval, rval}: (rgb_idx==1'b1) ? {gval, gval} : {bval, bval};
+    assign v  = 4'h1 << ((col_cnt % 8) >> 1);
+    assign color_data = (rgb_idx==1'b0) ? rval: (rgb_idx==1'b1) ? gval : bval;
     assign rgb_shift = (arb_out_wben==8) ? 24: (arb_out_wben==4) ? 16: (arb_out_wben==2) ? 8: 0;
-    assign arb_out_data = color_data << rgb_shift;
+    assign arb_out_data = (color_data << rgb_shift) << ((col_cnt % 2) << 2);
     
     
     assign internal_xfc = arb_in_rtr & arb_out_rts;
     
     assign data_gen_is_idle = (fill_rect_data_gen_eng_state == `GEN_STATE_IDLE);
-    assign data_gen_sm_start_cond = dec_eng_has_data;
+    assign data_gen_sm_start_cond = gen_start_strobe;
 endmodule

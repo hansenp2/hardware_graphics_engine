@@ -147,11 +147,8 @@ wr_addr
         if (!rst_)
 
         begin
-
             rd_addr <= 0;
-
             wr_addr <= 0;
-
         end
 
         else
@@ -166,9 +163,9 @@ wr_addr
           
 
             if (out_xfc)
-
+            begin
                 rd_addr <= rd_addr + 1;
-
+            end
        
 
         end

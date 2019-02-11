@@ -28,7 +28,7 @@ module cmd_processor(
             case (cmd)
                 8'h0:
                     // Test Pat Op
-                    engine_out_rts[0] <= 1'b1;
+                    engine_out_rts[0] <= i2c_in_data[0];
                 8'h1:
                     // Fill Rect Engine
                     engine_out_rts[1] <= 1'b1;
