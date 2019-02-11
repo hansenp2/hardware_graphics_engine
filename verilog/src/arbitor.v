@@ -51,7 +51,8 @@ counter,
 */
 //read-back outputs
 bcast_data,
-bcast_xfc
+bcast_xfc_out,
+en_fetching
     );
     
     parameter NUM_ENGINES = 3;
@@ -63,8 +64,37 @@ bcast_xfc
     
     //for data being read from a client
     output wire [31:0] bcast_data;
-    output reg [NUM_ENGINES-1:0] bcast_xfc;
+    /*output*/ reg [NUM_ENGINES-1:0] bcast_xfc;
     
+    input wire en_fetching;
+    reg en_fetching1, en_fetching2, en_fetching3, fetch_rts_in1, fetch_rts_in2, fetch_rts_in3;
+    output wire [2:0] bcast_xfc_out;
+    
+    always @ (posedge clk or negedge rst_)
+    begin
+        
+        if(!rst_)
+        begin
+            en_fetching1  <= 0;
+            en_fetching2  <= 0;
+            en_fetching3  <= 0;
+            fetch_rts_in1 <= 0;
+            fetch_rts_in2 <= 0;
+            fetch_rts_in3 <= 0;
+        end
+    
+        else
+        begin
+            en_fetching1  <= en_fetching;
+            en_fetching2  <= en_fetching1;
+            en_fetching3  <= en_fetching2;
+            fetch_rts_in1 <= fetch_rts_in;
+            fetch_rts_in2 <= fetch_rts_in1;
+            fetch_rts_in3 <= fetch_rts_in2;
+        end
+    end
+    
+    assign bcast_xfc_out = (en_fetching3 & fetch_rts_in2) ? bcast_xfc : 3'b000;
     
     //for deciding whose turn it is to communicate
     reg [NUM_ENGINES-1:0] round_robin;
@@ -198,7 +228,8 @@ bcast_xfc
            mem_data_out = 0;
            
            round_robin = 3'b001;
-           next_round_robin = 3'b010;
+           //next_round_robin = 3'b010;
+           next_round_robin = 3'b001;
            counter = 0;
            sel = 3'b000;
            
@@ -227,15 +258,17 @@ bcast_xfc
             
                 //If the round robin's turn does not have request, move to priority 
                 if(priority_check) begin
-                    sel <= round_robin;
-                    round_robin <= priority;
+                    sel <= priority;
+                    //sel <= round_robin;
+                    //round_robin <= priority;
                     next_round_robin <= (next_round_robin < (1 << (NUM_ENGINES-1))) ? (next_round_robin << 1):3'b001;
                 end        
                 
                 else begin
                     //talk to round robin and update for next cycle
-                    sel <= round_robin;
-                    round_robin <= next_round_robin;
+                    //sel <= round_robin;
+                    //round_robin <= next_round_robin;
+                    sel <= next_round_robin;
                     next_round_robin <= (next_round_robin < (1 << (NUM_ENGINES-1))) ? (next_round_robin << 1):3'b001;
                 end
             end
@@ -256,7 +289,7 @@ bcast_xfc
                                    wben <= fetch_op;
                                    mem_addr <= fetch_addr;
                                    mem_data_out <= fetch_wrdata;
-                                   delay_bcast_xfc <= (fetch_op) ? 3'b000:sel;
+                                   delay_bcast_xfc <= (fetch_op != 4'b0000) ? 3'b000 : sel;
                               end
 
                          end
@@ -267,7 +300,7 @@ bcast_xfc
                                    wben <= rectanglefill_op;
                                    mem_addr <= rectanglefill_addr;
                                    mem_data_out <= rectanglefill_wrdata;
-                                   delay_bcast_xfc <= (rectanglefill_op) ? 3'b000:sel;
+                                   delay_bcast_xfc <= (rectanglefill_op) ? 3'b000 : sel;
                                end
 
                          end
@@ -278,7 +311,7 @@ bcast_xfc
                              wben <= rectanglepix_op;
                              mem_addr <= rectanglepix_addr;
                              mem_data_out <= rectanglepix_wrdata;
-                             delay_bcast_xfc <= (rectanglepix_op) ? 3'b000:sel;
+                             delay_bcast_xfc <= (rectanglepix_op) ? 3'b000 : sel;
                          end
    
                    end
@@ -288,8 +321,9 @@ bcast_xfc
                                    delay_bcast_xfc <= 0;
                          end
           endcase
-          delay2_bcast_xfc <= delay_bcast_xfc;
-          bcast_xfc <= delay2_bcast_xfc;
+          //delay2_bcast_xfc <= delay_bcast_xfc;
+          //bcast_xfc <= delay2_bcast_xfc;
+          bcast_xfc <= delay_bcast_xfc;
           end
     end
     

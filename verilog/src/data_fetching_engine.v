@@ -13,7 +13,9 @@ module data_fetching_engine(
     
     output  [11:0]  out_data,
     input           out_rtr,
-    output          out_rts 
+    output          out_rts, 
+    
+    input           bcast_xfc
     );
     
 //    wire df_rtr_mem; 
@@ -23,8 +25,8 @@ module data_fetching_engine(
     
     data_fetch df(
         .clk(clk), 
-        .rst_(rst_), 
-        .en(en_fetching),        
+        .rst_(rst_ & en_fetching), 
+        //.en(en_fetching),        
         .in_data(in_data), 
         .in_rts(in_rts), 
         .in_rtr(in_rtr), 
@@ -35,15 +37,16 @@ module data_fetching_engine(
         .g_rts(g_rts_gb),
         .g_rtr(gb_rtr_g), 
         .b_rts(b_rts_bb),
-        .b_rtr(bb_rtr_b)
+        .b_rtr(bb_rtr_b),
+        .bcast_xfc(bcast_xfc)
     );
     
     wire [31:0] r_data, g_data, b_data; 
     wire rb_rts_pb, gb_rts_pb, bb_rts_pb, pb_rtr_cb;
     color_buffer rb(
         .clk(clk),
-        .rst_(rst_),
-        .en(en_fetching),
+        .rst_(rst_ & en_fetching),
+       // .en(en_fetching),
         .in_data(mem_out_data),
         .in_rts(r_rts_rb),
         .in_rtr(rb_rtr_r),
@@ -54,8 +57,8 @@ module data_fetching_engine(
     
     color_buffer gb(
         .clk(clk),
-        .rst_(rst_),
-        .en(en_fetching),
+        .rst_(rst_ & en_fetching),
+        //.en(en_fetching),
         .in_data(mem_out_data),
         .in_rts(g_rts_gb),
         .in_rtr(gb_rtr_g),
@@ -66,8 +69,8 @@ module data_fetching_engine(
     
     color_buffer bb(
         .clk(clk),
-        .rst_(rst_),
-        .en(en_fetching),
+        .rst_(rst_ & en_fetching),
+        //.en(en_fetching),
         .in_data(mem_out_data),
         .in_rts(b_rts_bb),
         .in_rtr(bb_rtr_b),
@@ -79,8 +82,8 @@ module data_fetching_engine(
     wire pb_rts_disp;         
     pixel_buffer pb(
         .clk(clk),
-        .rst_(rst_),
-        .en(en_fetching),
+        .rst_(rst_ & en_fetching),
+        //.en(en_fetching),
         .r_data(r_data),
         .g_data(g_data),
         .b_data(b_data),
