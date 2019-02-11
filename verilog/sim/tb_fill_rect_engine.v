@@ -56,18 +56,24 @@ module fill_rect_engine_tb(
         );
         
     integer file; 
-    always @(fill_rect_arb_addr)
+    always @(negedge CLOCK)
     begin
         if (!rst_)
         begin
-            file = $fopen("../../../../result.dat", "w");  
+            file = $fopen("../../../../result.dat", "w");
+            $fclose(file); 
         end
         else
         begin
             if (fill_rect_arb_rts)
             begin
-                $fwrite(file, 
-                        fill_rect_arb_addr);
+                file = $fopen("../../../../result.dat", "a");
+                $fdisplay(file, "%h,%h,%h,%h", fill_rect_arb_addr,
+                                               fill_rect_arb_data,
+                                               fill_rect_arb_wben,
+                                               fill_rect_arb_op);
+                $fclose(file);
+                
             end
         end
     end
@@ -89,11 +95,11 @@ module fill_rect_engine_tb(
             #`CLK;
             cmd_proc_fil_rect_data = 8'h00;
             #`CLK;
-            cmd_proc_fil_rect_data = 8'h04;
+            cmd_proc_fil_rect_data = 8'h08;
             #`CLK;
             cmd_proc_fil_rect_data = 8'h00;
             #`CLK;
-            cmd_proc_fil_rect_data = 8'h04;
+            cmd_proc_fil_rect_data = 8'h08;
             #`CLK;
             cmd_proc_fil_rect_data = 8'h01;
             #`CLK;
@@ -103,8 +109,9 @@ module fill_rect_engine_tb(
             #`CLK;
             cmd_proc_fill_rect_rts = 1'b0;
             #`CLK;
+            #100;
             // --------- Command #2
-            /**
+            
             fill_rect_arb_rtr = 1'b1;
             cmd_proc_fill_rect_rts = 1'b1;
             cmd_proc_fil_rect_data = 8'h00;
@@ -130,6 +137,6 @@ module fill_rect_engine_tb(
             cmd_proc_fil_rect_data = 16'h09;  
             #`CLK;
             cmd_proc_fill_rect_rts = 1'b0;
-            **/
+            
         end
 endmodule
