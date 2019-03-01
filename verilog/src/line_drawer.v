@@ -25,7 +25,6 @@ module line_drawer (
     output reg [9:0] draw_x, draw_y 
 );
 
-    
     // change in x and y (determines driving axis)
     wire [9:0] dx, dy;    
     assign dx = (x2_in >= x1_in) ? (x2_in - x1_in) : (x1_in - x2_in);
@@ -52,7 +51,6 @@ module line_drawer (
     
     // line drawing state machine
     reg [1:0] state;
-    // reg [9:0] draw_x, draw_y; 
     reg signed [9:0] error; 
     
     // transfer completes
@@ -92,7 +90,7 @@ module line_drawer (
     end
     
     // line drawer
-    always @ (posedge clk or negedge rst_)
+    always @ (posedge clk)
     begin
         if (state == 2'b00 && in_xfc == 1)
         begin
@@ -104,7 +102,7 @@ module line_drawer (
         else if (state == 2'b01 && out_xfc == 1)
         begin
             // write pixel data
-            $display("!WRITE PX (%d,%d) --> %d", draw_x, draw_y, $signed(error));
+            // $display("!WRITE PX (%d,%d) --> %d", draw_x, draw_y, $signed(error));
             
             if (error >= 0)   
                 draw_y = (y1 >= y2) ? (draw_y - 1) : (draw_y + 1);  
@@ -116,7 +114,7 @@ module line_drawer (
         else if (state == 2'b10 && out_xfc == 1)
         begin
             // write pixel data
-            $display("WRITE PX (%d,%d) --> %d", draw_x, draw_y, $signed(error));
+            // $display("WRITE PX (%d,%d) --> %d", draw_x, draw_y, $signed(error));
             
             if (error >= 0) 
                 draw_x = (x1 >= x2) ? (draw_x - 1) : (draw_x + 1); 
