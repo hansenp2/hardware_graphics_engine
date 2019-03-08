@@ -41,7 +41,7 @@ module writer_integration(
         .vga_green(vga_green),
         .vga_blue(vga_blue),
         .en_fetching(en_fetching)
-        // .h_counter(h_counter)
+        // .h_counter(h_counter),
         // .v_counter(v_counter)
     );
 
@@ -80,6 +80,12 @@ module writer_integration(
     wire linedrawer_rtr_out, linedrawer_rts_arb, linedrawer_xfc;
     wire [3:0] linedrawer_wr_op;
 
+    // circle drawing engine stuff here
+    wire [16:0] circledrawer_arb_addr;
+    wire [31:0] circledrawer_wr_data;
+    wire circledrawer_rtr_out, circledrawer_rts_arb, circledrawer_xfc;
+    wire [3:0] circledrawer_wr_op;
+
     arbitor_v2 arb(
         .clk(clk25),
         .rst_(rst_),
@@ -96,18 +102,28 @@ module writer_integration(
         .linedrawer_rtr_out(linedrawer_rtr_out),
         .linedrawer_op(linedrawer_wr_op),
 
-        .circledrawer_addr(17'b0),
-        .circledrawer_wrdata(32'b0),
-        .circledrawer_rts_in(1'b0),
-        .circledrawer_rtr_out(),
-        .circledrawer_op(4'b0),
+        .circledrawer_addr(circledrawer_arb_addr),
+        .circledrawer_wrdata(circledrawer_wr_data),
+        .circledrawer_rts_in(circledrawer_rts_arb),
+        .circledrawer_rtr_out(circledrawer_rtr_out),
+        .circledrawer_op(circledrawer_wr_op),
+
+        /*
+        //for debugging
+        .sel(sel),
+        .fetch_xfc(fetch_xfc),
+        .rectanglefill_xfc(rectanglefill_xfc),
+        .rectanglepix_xfc(rectanglepix_xfc),
+        */
 
         .mem_data_in(data_from_mem),
         .wben(wben),
         .mem_addr(arb_mem_addr),
         .mem_data_out(mem_data_out),
+
         .bcast_data(arb_bcast_data),
         .bcast_xfc_out(bcast_xfc)
+        // .en_fetching(en_fetching)
     );
 
     // Block RAM Module
@@ -118,6 +134,7 @@ module writer_integration(
         .BRAM_PORTA_0_dout(data_from_mem),
         .BRAM_PORTA_0_we(wben)
     );
+
 
     // temp for drawing static line
     wire [51:0] test_line;
@@ -137,6 +154,27 @@ module writer_integration(
         .arb_data_out(linedrawer_wr_data),
         .arb_addr_out(lindrawer_arb_addr),
         .wr_op(linedrawer_wr_op)
+    );
+
+
+    // Circle Drawing Engine
+    wire [41:0] test_circle;
+    // assign test_circle = 42'b0000000010_0000000010_0000000010_111111111111;
+    assign test_circle = 42'b0100111111_0011011101_0010000000_111100000000;
+    // assign test_circle = 42'b0010000000_0010000000_0001000001_111111111111;
+    circle_drawing_engine cde(
+        .clk(clk25),
+        .rst_(rst_),
+        .in_op(test_circle),
+        .in_rts(1'b1),
+        .in_rtr(),
+        .out_rts(circledrawer_rts_arb),
+        .out_rtr(circledrawer_rtr_out),
+        .bcast_xfc(bcast_xfc[2]),
+        .arb_data_in(arb_bcast_data),
+        .arb_data_out(circledrawer_wr_data),
+        .arb_addr_out(circledrawer_arb_addr),
+        .wr_op(circledrawer_wr_op)
     );
 
 endmodule
