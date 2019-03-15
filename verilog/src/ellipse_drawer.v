@@ -186,7 +186,7 @@ module ellipse_drawer(
                 `E_DRAW_SETUP_STATE_1:
                 begin
                     if (d2 < 0)
-                        begin
+                    begin
                         y <= y + 1;
                         t9 <= t9 + t3;
 
