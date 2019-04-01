@@ -14,10 +14,10 @@ module line_drawer (
     input rst_,
 
     // Point 1
-    input [9:0] x1_in, y1_in,
+    input [15:0] x1_in, y1_in,
 
     // Point 2
-    input [9:0] x2_in, y2_in,
+    input [15:0] x2_in, y2_in,
 
     input [11:0] color,
 

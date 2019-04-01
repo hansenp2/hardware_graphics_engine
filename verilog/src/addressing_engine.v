@@ -12,7 +12,6 @@ module addressing_engine(
     input           rst_,
     
     // Decode Engine Interface
-    // input          addr_start_strobe,
     input   [9:0]  cmd_data_origx,
     input   [9:0]  cmd_data_origy,
     input   [11:0] in_color, 

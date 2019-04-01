@@ -38,9 +38,12 @@ module demo(
         end
         else
         begin
-            /*LFSR Logic*/
-            temp <= command[51] ~^ command[48];
-            command <= { command[50:0],temp};
+            if (mode)
+            begin
+                /*LFSR Logic*/
+                temp <= command[51] ~^ command[48];
+                command <= { command[50:0],temp};
+            end
         end
     
     end

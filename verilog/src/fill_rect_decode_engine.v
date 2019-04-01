@@ -77,7 +77,7 @@ module fill_rect_decode_engine(
                     `DECODE_STATE_ORIGX_B1:
                     begin
                         // Store X origin data
-                        cmd_data_origx[15:8] <= cmd_fifo_data;
+                        cmd_data_origx[15:8] <= 8'd0;//cmd_fifo_data;
 
                         // Initiate Calculation State machine to begin calculating
                         // row index addresses from the X origin data
@@ -85,52 +85,52 @@ module fill_rect_decode_engine(
                     end
                     `DECODE_STATE_ORIGX_B2:
                     begin
-                        cmd_data_origx[7:0] <= cmd_fifo_data;
+                        cmd_data_origx[7:0] <= 8'd0;//cmd_fifo_data;
                         dec_state <= `DECODE_STATE_ORIGY_B1;
                     end
                     `DECODE_STATE_ORIGY_B1:
                     begin
                         // Store y origin data
-                        cmd_data_origy[15:8] <= cmd_fifo_data;
+                        cmd_data_origy[15:8] <= 8'd0;//cmd_fifo_data;
                         dec_state <= `DECODE_STATE_ORIGY_B2;
                     end
                     `DECODE_STATE_ORIGY_B2:
                     begin
-                        cmd_data_origy[7:0] <= cmd_fifo_data;
+                        cmd_data_origy[7:0] <= 8'd0;//cmd_fifo_data;
                         dec_state <= `DECODE_STATE_WID_B1;
                     end
                     `DECODE_STATE_WID_B1:
                     begin
                         // Store width of box
-                        cmd_data_wid[15:8] <= cmd_fifo_data;
+                        cmd_data_wid[15:8] <= 8'd0;//cmd_fifo_data;
                         dec_state <= `DECODE_STATE_WID_B2;
                     end
                     `DECODE_STATE_WID_B2:
                     begin
-                        cmd_data_wid[7:0] <= cmd_fifo_data;
+                        cmd_data_wid[7:0] <= 8'd4;//cmd_fifo_data;
                         dec_state <= `DECODE_STATE_HGT_B1;
                     end
                     `DECODE_STATE_HGT_B1:
                     begin
                         // Store hight of box
-                        cmd_data_hgt[15:8] <= cmd_fifo_data;
+                        cmd_data_hgt[15:8] <= 8'd0;//cmd_fifo_data;
                         dec_state <= `DECODE_STATE_HGT_B2;
                     end
                     `DECODE_STATE_HGT_B2:
                     begin
-                        cmd_data_hgt[7:0] <= cmd_fifo_data;
+                        cmd_data_hgt[7:0] <= 8'd4;//cmd_fifo_data;
                         dec_state <= `DECODE_STATE_R;
                     end
                     `DECODE_STATE_R:
                     begin
                         // Store R pixel data
-                        cmd_data_rval <=  cmd_fifo_data;
+                        cmd_data_rval <=  4'hF;//cmd_fifo_data;
                         dec_state <= `DECODE_STATE_G;
                     end
                     `DECODE_STATE_G:
                     begin
                         // Store G pixel value
-                        cmd_data_gval <= cmd_fifo_data;
+                        cmd_data_gval <= 4'hF;//cmd_fifo_data;
                         dec_state <= `DECODE_STATE_B;
                     end
                     `DECODE_STATE_B:
@@ -139,7 +139,7 @@ module fill_rect_decode_engine(
                         //begin
                         //addr_start_strobe <= 1'b1;
                             // Store B pixel value
-                        cmd_data_bval <= cmd_fifo_data;                       
+                        cmd_data_bval <= 4'hF;//cmd_fifo_data;                       
                         //end
                         //else
                         //begin

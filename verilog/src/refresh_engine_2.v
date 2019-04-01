@@ -12,14 +12,14 @@ module refresh_engine_2(
     output reg [3:0]       vga_red, 
     output reg [3:0]       vga_green, 
     output reg [3:0]       vga_blue,
-    output active_video, en_fetching
+    output active_video, en_fetching,
     
     // FOR DEBUGGING
-    // output reg [9:0] h_counter, v_counter    
+    output reg [9:0] h_counter, v_counter    
 );
 
     // horizontal counter
-    reg [9:0] h_counter;
+    // reg [9:0] h_counter;
     always @ (posedge clk or negedge rst_)
     begin
         if (!rst_)
@@ -29,7 +29,7 @@ module refresh_engine_2(
     end
     
     // vertical counter
-    reg [9:0] v_counter;
+    // reg [9:0] v_counter;
     always @ (posedge clk or negedge rst_)
     begin
         if (!rst_)

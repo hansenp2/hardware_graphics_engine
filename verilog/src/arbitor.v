@@ -3,7 +3,7 @@
 `define NUM_ENGINES 2
 `define DF_CYCLES   2
 
-module arbitor_v2(
+module arbitor(
 
     // clock and async reset
     input clk,

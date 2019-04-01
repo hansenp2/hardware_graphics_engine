@@ -16,6 +16,8 @@
         // FOR DEBUGGING
         wire  [9:0] h_counter;
         wire  [9:0] v_counter; 
+        reg cmd_proc_rts;
+        reg [7:0] cmd_proc_data;
         
     //    wire [31:0] mem_out_data; 
     //    wire [11:0] d0, d1, d2, d3, d4, d5, d6, d7;
@@ -33,7 +35,9 @@
             .vga_green(vga_green),
             .vga_blue(vga_blue),
             .h_counter(h_counter),
-            .v_counter(v_counter)  
+            .v_counter(v_counter),
+            .cmd_proc_rts(),
+            .cmd_proc_data()
         ); 
         
         integer i, count;
@@ -43,12 +47,14 @@
         reg [3:0] G_DATA [0:307199];
         reg [3:0] B_DATA [0:307199];
         integer NUM_PASS, NUM_FAIL;
+        
+        integer rect_count = 0;
             
         initial begin
         
-            $readmemh("C:/Users/Patrick/Documents/TCNJ/senior_project_prep/py_create_mem_inits/tb_cmp/R_DATA.txt", R_DATA);
-            $readmemh("C:/Users/Patrick/Documents/TCNJ/senior_project_prep/py_create_mem_inits/tb_cmp/G_DATA.txt", G_DATA);
-            $readmemh("C:/Users/Patrick/Documents/TCNJ/senior_project_prep/py_create_mem_inits/tb_cmp/B_DATA.txt", B_DATA);
+            $readmemh("/home/maxwels2/R_DATA.txt", R_DATA);
+            $readmemh("/home/maxwels2/G_DATA.txt", G_DATA);
+            $readmemh("/home/maxwels2/B_DATA.txt", B_DATA);
         
             // Iniatilze Inputs
             clk     = 1'b0;
@@ -73,7 +79,8 @@
                     
                     if (clk == 1)
                     begin
-                        #1 clk = ~clk;  
+                        #1 clk = ~clk; 
+                        cmd_proc_rts = 1'b1;
                         
                         if (pixel_count >= 0 && pixel_count < 1280 && clk_counter == 0)
                         begin

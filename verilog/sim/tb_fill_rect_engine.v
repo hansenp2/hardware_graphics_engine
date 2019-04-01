@@ -28,7 +28,7 @@ module fill_rect_engine_tb(
     end
     wire rst_ = RESET;
     //  Command Processor <-> Fill Rect Engine Interface
-    reg     [7:0]   cmd_proc_fil_rect_data;
+    reg     [87:0]   cmd_proc_fil_rect_data;
     reg             cmd_proc_fill_rect_rts;
     wire            cmd_proc_fill_rect_rtr;
     //  Fill Rect Engine <-> Arbiter Interface
@@ -85,58 +85,20 @@ module fill_rect_engine_tb(
             // --------- Command #1
             cmd_proc_fill_rect_rts = 1'b1;
             fill_rect_arb_rtr = 1'b1;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h08;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h08;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h01;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h02;  
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h03;  
+            cmd_proc_fil_rect_data = 88'h03_02_01_0004_0004_0000_0000;
             #`CLK;
             cmd_proc_fill_rect_rts = 1'b0;
             #`CLK;
-            #100;
-            // --------- Command #2
-            
+            #`CLK;
+            #`CLK;
+            #`CLK;
+            #`CLK;
+            #`CLK;
+            #`CLK;
+            #`CLK;            
+            fill_rect_arb_rtr = 1'b0;
+            //#100000;
+            #`CLK;
             fill_rect_arb_rtr = 1'b1;
-            cmd_proc_fill_rect_rts = 1'b1;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h01;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h00;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h04;
-            #`CLK;
-            cmd_proc_fil_rect_data = 8'h07;
-            #`CLK;         
-            cmd_proc_fil_rect_data = 8'h08;  
-            #`CLK;
-            cmd_proc_fil_rect_data = 16'h09;  
-            #`CLK;
-            cmd_proc_fill_rect_rts = 1'b0;
-            
         end
 endmodule

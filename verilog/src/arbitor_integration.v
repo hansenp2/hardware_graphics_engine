@@ -6,15 +6,20 @@ module arbiter_integration(
     input               enable, 
     
     input               test_mode,
+    input               cmd_in_rts,
+    //output              cmd_out_rtr,
      
     output              vga_h_sync,
     output              vga_v_sync,     
     output  [3:0]       vga_red, 
     output  [3:0]       vga_green, 
-    output  [3:0]       vga_blue
+    output  [3:0]       vga_blue,
+    
     
     // FOR DEBUGGING
-    // output [9:0] h_counter, v_counter       
+    //output [9:0] h_counter, v_counter,
+    input [7:0] cmd_proc_data,
+    input cmd_proc_rts     
     );
     
     // Clock Divider
@@ -40,9 +45,9 @@ module arbiter_integration(
         .vga_red(vga_red),
         .vga_green(vga_green),
         .vga_blue(vga_blue),
-        .en_fetching(en_fetching)
-        // .h_counter(h_counter),
-        // .v_counter(v_counter)
+        .en_fetching(en_fetching),
+        .h_counter(h_counter),
+        .v_counter(v_counter)
     );  
          
     // Interface Needed without Arbiter
@@ -72,7 +77,13 @@ module arbiter_integration(
     wire [16:0] arb_mem_addr;
     wire [2:0] sel;
     wire [3:0] wben;
-    wire rectanglefill_rtr_out, rectanglepix_rtr_out, fetch_xfc, rectanglefill_xfc, rectanglepix_xfc;
+    wire rectanglepix_rtr_out, fetch_xfc, rectanglefill_xfc, rectanglepix_xfc;
+    
+    wire fill_rect_in_rtr, fill_rect_out_rts, fill_rect_out_op;
+    wire cmdproc_in_rts, cmdproc_out_rtr;
+    wire [16:0] fill_rect_out_addr;
+    wire [11:0] fill_rect_out_data;
+    wire [3:0] fill_rect_out_wben;
     arbitor arb(
         .clk(clk25),
         .rst_(rst_),
@@ -83,11 +94,11 @@ module arbiter_integration(
         .fetch_rtr_out(arb_rts_df),
         .fetch_op(0),
         
-        .rectanglefill_addr(0),
-        .rectanglefill_wrdata(0),
-        .rectanglefill_rts_in(0),
-        .rectanglefill_rtr_out(rectanglefill_rtr_out),
-        .rectanglefill_op(0),
+        .rectanglefill_addr(fill_rect_out_addr),
+        .rectanglefill_wrdata(fill_rect_out_data),
+        .rectanglefill_rts_in(fill_rect_out_rts),
+        .rectanglefill_rtr_out(fill_rect_in_rtr),
+        .rectanglefill_op(fill_rect_out_wben),
         
         .rectanglepix_addr(0),
         .rectanglepix_wrdata(0),
@@ -113,8 +124,27 @@ module arbiter_integration(
         .en_fetching(en_fetching)
     );
     
+    fill_rect_engine fre(
+        .clk(clk25),
+        .rst_(rst_),
+        .cmd_in_data(cmd_proc_data),
+        .cmd_in_rts(cmd_proc_rts),
+        .cmd_out_rtr(cmdproc_out_rtr),
+        .arb_out_data(fill_rect_out_data),
+        .arb_out_addr(fill_rect_out_addr),
+        .arb_out_wben(fill_rect_out_wben),
+        .arb_in_rtr(fill_rect_in_rtr),
+        .arb_out_rts(fill_rect_out_rts),
+        .arb_out_op(fill_rect_out_op),
+        .arb_bcast_in_data(arb_bcast_data),
+        .arb_bcast_in_xfc(bcast_xfc)
+    );
+        
+        wire            cmd_fifo_rtr;
+        wire            cmd_fifo_rts;
+        wire    [7:0]   cmd_fifo_data;
     // Block RAM Module
-    gram_wrapper gw(
+    GRAM_wrapper gw(
         .BRAM_PORTA_0_addr(arb_mem_addr),
         .BRAM_PORTA_0_clk(clk25),
         .BRAM_PORTA_0_din(0),
@@ -123,7 +153,7 @@ module arbiter_integration(
     );
 
 
-    // INFERRED BRAM USED FOR SIMULATION ONLY
+//     INFERRED BRAM USED FOR SIMULATION ONLY
 //    mem_for_testing mt(
 //        .clk(clk25),
 //        .in_addr(arb_mem_addr),

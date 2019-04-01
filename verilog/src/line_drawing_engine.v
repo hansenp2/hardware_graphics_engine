@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 // INPUT FIFO PARAMETERS
-`define IN_FIFO_DATA_WIDTH  52
+`define IN_FIFO_DATA_WIDTH  128
 `define IN_FIFO_DEPTH        4
 `define IN_FIFO_LOG2DEPTH    2
 
@@ -17,7 +17,7 @@ module line_drawing_engine(
     input rst_,
 
     // input interface
-    input [51:0] in_op,
+    input [127:0] in_op,
     input  in_rts,
     output in_rtr,
 
@@ -34,7 +34,7 @@ module line_drawing_engine(
 );
 
     // input fifo for ops
-    wire [51:0] current_op;
+    wire [127:0] current_op;
     wire fi_rts_ld, ld_rtr_fi;
     fifo #(`IN_FIFO_DATA_WIDTH, `IN_FIFO_DEPTH, `IN_FIFO_LOG2DEPTH) fi (
         .clk(clk),
@@ -60,11 +60,11 @@ module line_drawing_engine(
     line_drawer ld (
         .clk(clk),
         .rst_(rst_),
-        .x1_in(current_op[51:42]),
-        .y1_in(current_op[41:32]),
-        .x2_in(current_op[31:22]),
-        .y2_in(current_op[21:12]),
-        .color(current_op[11:0]),
+        .x1_in({current_op[15:8], current_op[7:0]}),
+        .y1_in({current_op[23:16], current_op[31:24]}),
+        .x2_in({current_op[39:32], current_op[47:40]}),
+        .y2_in({current_op[55:48], current_op[63:56]}),
+        .color({current_op[77:64], current_op[75:72], current_op[83:80]}),
 
         .in_rts(fi_rts_ld),
         .in_rtr(ld_rtr_fi),

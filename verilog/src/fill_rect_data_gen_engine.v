@@ -7,10 +7,10 @@ module fill_rect_data_gen_engine(
     input               clk,
     input               rst_,
     // Pipeline Stall Interface
-    input               dec_eng_has_data,//dead
-    output              data_gen_is_idle,
+    //input               dec_eng_has_data,//dead
+    //output              data_gen_is_idle,
     // Addressing Engine Interface
-    input               gen_start_strobe,
+    //input               gen_start_strobe,
     input       [15:0]  init_addr,
     // Command Field Data Interface
     input       [15:0]  cmd_data_hgt,
@@ -19,14 +19,16 @@ module fill_rect_data_gen_engine(
     input       [3:0]   cmd_data_bval,
     input       [3:0]   cmd_data_gval,
     // Arbiter Output Interface
-    output  reg         arb_out_rts,
+    output  /*reg*/         arb_out_rts,
     input               arb_in_rtr,
     output      [3:0]   arb_out_wben ,
     output  reg [15:0]  arb_out_addr,
     output      [31:0]  arb_out_data,
     output  reg         arb_out_op,
     input       [31:0]  arb_bcast_in_data,
-    input               arb_bcast_in_xfc
+    input               arb_bcast_in_xfc,
+    input               in_rts,
+    output  reg         out_rtr
     );
 
     reg     [3:0]   rgb_idx;
@@ -58,10 +60,12 @@ module fill_rect_data_gen_engine(
             row_cnt <= 16'h00;
             hgt <= 16'h00;
             wid <= 16'h00;
-            arb_out_rts <= 1'b0;
+            //arb_out_rts <= 1'b0;
             arb_out_addr <= 16'h00;
             arb_out_op <= 1'b0;
+            out_rtr <= 1'b0;
         end
+        
         // Begin data generation when arb is rtr and this module is rts
         else if (arb_in_rtr)
         begin
@@ -69,11 +73,12 @@ module fill_rect_data_gen_engine(
             case (fill_rect_data_gen_eng_state)
                 `GEN_STATE_IDLE:
                 begin
-                    
+                    out_rtr <= 1'b1;
                     // Default idle state
-                    if (data_gen_sm_start_cond)
+                    if (in_rts)
                     begin
-                        arb_out_rts <= 1'b1;
+                        //arb_out_rts <= 1'b1;
+                        out_rtr <= 1'b0;
                         hgt <= cmd_data_hgt;
                         wid <= cmd_data_wid;
                         arb_out_addr <= init_addr;
@@ -87,13 +92,12 @@ module fill_rect_data_gen_engine(
                     // that are used to determin wben bits and rgb mem indexing
                     if ((col_cnt == (wid - 1'b1)) && (row_cnt == (hgt - 1'b1)) && (rgb_idx == 2'b10))
                     begin
-                        //cmd_fifo_rtr <= 1'b1;
                         col_cnt <= 1'b0;
                         row_cnt <= 1'b0;
                         rgb_idx <= 1'b0;
 
                         arb_out_addr <= 16'h0000;
-                        arb_out_rts <= 1'b0;
+                        //arb_out_rts <= 1'b0;
                         fill_rect_data_gen_eng_state <= `GEN_STATE_IDLE;
                     end
                     else
@@ -124,6 +128,7 @@ module fill_rect_data_gen_engine(
         end
     end
 
+    assign arb_out_rts = (fill_rect_data_gen_eng_state != `GEN_STATE_IDLE) ? 1'b1 : 1'b0;
     // RGB Index the output data
     assign rval = cmd_data_rval;
     assign gval = cmd_data_gval;
@@ -137,6 +142,6 @@ module fill_rect_data_gen_engine(
     
     assign internal_xfc = arb_in_rtr & arb_out_rts;
     
-    assign data_gen_is_idle = (fill_rect_data_gen_eng_state == `GEN_STATE_IDLE);
-    assign data_gen_sm_start_cond = gen_start_strobe;
+    //assign data_gen_is_idle = (fill_rect_data_gen_eng_state == `GEN_STATE_IDLE);
+    //assign data_gen_sm_start_cond = gen_start_strobe;
 endmodule
