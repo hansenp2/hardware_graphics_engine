@@ -16,6 +16,7 @@ module cmd_processor(
     output    [127:0]   bcast_out_data,
     output  reg         test_pat_state,
     output  reg         line_demo_state
+    //output              packet_xfc
     );
 
     wire    [4:0]   xfc;

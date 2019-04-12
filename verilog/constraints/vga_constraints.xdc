@@ -49,6 +49,8 @@ set_property -dict { PACKAGE_PIN B11   IOSTANDARD LVCMOS33 } [get_ports { vga_h_
 set_property -dict {PACKAGE_PIN B12 IOSTANDARD LVCMOS33} [get_ports vga_v_sync]
 set_property -dict { PACKAGE_PIN B12   IOSTANDARD LVCMOS33 } [get_ports { vga_v_sync }]; IO_L3N_T0_DQS_AD1N_15 Sch=vga_vs
 
+#set_property -dict { PACKAGE_PIN G17   IOSTANDARD LVCMOS33 } [get_ports { packet_xfc }]; IO_L18N_T2_A23_15 Sch=ja[4]
+
 set_property IOSTANDARD LVCMOS33 [get_ports {o_anode[7]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {o_anode[6]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {o_anode[5]}]
