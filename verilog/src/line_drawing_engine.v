@@ -60,7 +60,7 @@ module line_drawing_engine(
     line_drawer ld (
         .clk(clk),
         .rst_(rst_),
-        .x1_in({current_op[15:8], current_op[7:0]}),
+        .x1_in({current_op[7:0], current_op[15:8]}),
         .y1_in({current_op[23:16], current_op[31:24]}),
         .x2_in({current_op[39:32], current_op[47:40]}),
         .y2_in({current_op[55:48], current_op[63:56]}),

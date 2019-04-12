@@ -62,7 +62,7 @@ module line_drawer (
 
     // Line drawing state machine
     reg [2:0] state;
-    reg signed [9:0] error;
+    reg signed [31:0] error;
 
     // Transfer complete signals
     wire in_xfc, out_xfc;

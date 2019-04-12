@@ -1,11 +1,9 @@
 `timescale 1ns / 1ps
 
-`define NUM_PACKETS_SOFT_RST        1
-`define NUM_PACKETS_LINE_DRAW       11
-`define NUM_PACKETS_RECT_FILL       11
+`define NUM_PACKETS_SOFT_RST        2
+`define NUM_PACKETS_LINE_DRAW       12
+`define NUM_PACKETS_RECT_FILL       12
 
-// TODO: Stall when engine !rtr
-// TODO: Turn Off rts when we arent getting valid data (how do we know when this will be?)
 module cmd_processor(
     input               clk,
     input               rst_,
@@ -24,9 +22,10 @@ module cmd_processor(
     reg     [3:0]   packet_cnt;
     wire    [7:0]   packet_shift;
     reg     [127:0] cmd_out;
-    wire    [31:0]   i2c_in_tmp;
+    wire    [31:0]  i2c_in_tmp;
     wire            packet_xfc;
     wire    [3:0]   num_packets_in_cmd;
+    reg     [3:0]   engine_id;
     
     always @(posedge clk or negedge rst_)
     begin
@@ -40,8 +39,16 @@ module cmd_processor(
         begin
             if (packet_xfc)
             begin
-                cmd_out <= cmd_out | (i2c_in_tmp << (packet_shift));
-                packet_cnt <= packet_cnt + 1; 
+                if (packet_cnt == 0)
+                begin
+                    //engine_id <= i2c_in_data;
+                    cmd_out <= 0;
+                end
+                else
+                begin
+                    cmd_out <= cmd_out | (i2c_in_data << (packet_shift)); 
+                end
+                packet_cnt <= packet_cnt + 1;
             end
             else
             begin
@@ -98,7 +105,7 @@ module cmd_processor(
     
     assign packet_xfc = i2c_rts;
     assign i2c_in_tmp = i2c_in_data;
-    assign packet_shift = (packet_cnt << 3);
+    assign packet_shift = ((packet_cnt - 1) << 3);
     assign num_packets_in_cmd = (cmd==8'h4) ? `NUM_PACKETS_LINE_DRAW : 
                                 (cmd==8'h0) ? `NUM_PACKETS_SOFT_RST : 
                                 (cmd==8'h3) ? `NUM_PACKETS_RECT_FILL : 0;
