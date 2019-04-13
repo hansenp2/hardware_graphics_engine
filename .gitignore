@@ -1,6 +1,10 @@
+.env
 .vscode
 
 python/generate_mem_init_file/*.coe
 python/generate_mem_init_file/img_from_mem.py
 
-python/2d_drawing/img
+python/2d_drawing/img/*
+
+python/sw_demo/img/*
+python/sw_demo/out/*
