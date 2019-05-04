@@ -83,7 +83,6 @@ module data_fetching_engine(
     pixel_buffer pb(
         .clk(clk),
         .rst_(rst_ & en_fetching),
-        //.en(en_fetching),
         .r_data(r_data),
         .g_data(g_data),
         .b_data(b_data),

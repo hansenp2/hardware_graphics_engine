@@ -137,13 +137,13 @@ module fill_rect_engine(
             begin
                 if (cmd_fifo_rts & cmd_fifo_rtr)
                 begin
-                    cmd_data_origx <= cmd_fifo_data[15:0];
-                    cmd_data_origy <= cmd_fifo_data[31:16];
-                    cmd_data_wid <= cmd_fifo_data[47:32];
-                    cmd_data_hgt <= cmd_fifo_data[63:48];
-                    cmd_data_rval <= cmd_fifo_data[71:64];
-                    cmd_data_gval <= cmd_fifo_data[79:72];
-                    cmd_data_bval <= cmd_fifo_data[87:80];
+                    cmd_data_origx <= {cmd_fifo_data[7:0], cmd_fifo_data[15:8]};
+                    cmd_data_origy <= {cmd_fifo_data[23:16], cmd_fifo_data[31:24]};
+                    cmd_data_wid <= {cmd_fifo_data[39:32], cmd_fifo_data[47:40]};
+                    cmd_data_hgt <= {cmd_fifo_data[55:48], cmd_fifo_data[63:56]};
+                    cmd_data_rval <= cmd_fifo_data[77:64];
+                    cmd_data_gval <= cmd_fifo_data[75:72];
+                    cmd_data_bval <= cmd_fifo_data[83:80];
                 end
             end
         end

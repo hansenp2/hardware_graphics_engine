@@ -9,9 +9,9 @@ module refresh_engine_2(
     
     output vga_h_sync, 
     output vga_v_sync,
-    output reg [3:0]       vga_red, 
-    output reg [3:0]       vga_green, 
-    output reg [3:0]       vga_blue,
+    output [3:0]       vga_red, 
+    output [3:0]       vga_green, 
+    output [3:0]       vga_blue,
     output active_video, en_fetching,
     
     // FOR DEBUGGING
@@ -51,47 +51,74 @@ module refresh_engine_2(
     wire out_color;
     assign out_color = (h_counter >= 159) && (h_counter < 799) && (v_counter >= 45) && (v_counter <= 524);
     
-    always @ (*)
+    reg test_state;
+    always @ (posedge clk or negedge rst_)
     begin
         if (!rst_)
+            test_state = 0;
+        else
         begin
-            vga_red     <= 0;
-            vga_green   <= 0;
-            vga_blue    <= 0;  
-        end
-        
-        else 
-        begin
-            if (!active_video)
-            begin
-                vga_red     <= 0;
-                vga_green   <= 0;
-                vga_blue    <= 0; 
-            end
-            
-            else
-            begin
-                if (!test_mode)
+            case (test_state)
+                0:
                 begin
-                    vga_red     <= current_pixel[11:8];    
-                    vga_green   <= current_pixel[7:4];     
-                    vga_blue    <= current_pixel[3:0];     
+                    if (test_mode) test_state <= 1;
                 end
                 
-                else 
+                1:
                 begin
-                    if      (h_counter >= 160 && h_counter <= 239) begin vga_red <= 4'b0000; vga_green <= 4'b0000; vga_blue <= 4'b0000; end                    
-                    else if (h_counter >= 240 && h_counter <= 319) begin vga_red <= 4'b1111; vga_green <= 4'b1111; vga_blue <= 4'b1111; end                    
-                    else if (h_counter >= 320 && h_counter <= 399) begin vga_red <= 4'b1111; vga_green <= 4'b0000; vga_blue <= 4'b0000; end                    
-                    else if (h_counter >= 400 && h_counter <= 479) begin vga_red <= 4'b1111; vga_green <= 4'b1111; vga_blue <= 4'b0000; end                    
-                    else if (h_counter >= 480 && h_counter <= 559) begin vga_red <= 4'b0000; vga_green <= 4'b1111; vga_blue <= 4'b0000; end                    
-                    else if (h_counter >= 560 && h_counter <= 639) begin vga_red <= 4'b0000; vga_green <= 4'b1111; vga_blue <= 4'b1111; end                    
-                    else if (h_counter >= 640 && h_counter <= 719) begin vga_red <= 4'b0000; vga_green <= 4'b0000; vga_blue <= 4'b1111; end                    
-                    else                                           begin vga_red <= 4'b1111; vga_green <= 4'b0000; vga_blue <= 4'b1111; end
+                    if (!test_mode) test_state <= 0;
                 end
-            end
+            endcase
         end
-        
     end
+    
+    wire tp1, tp2, tp3, tp4, tp5, tp6, tp7, tp8;
+    assign tp1 = (h_counter >= 160 && h_counter <= 239);
+    assign tp2 = (h_counter >= 240 && h_counter <= 319);
+    assign tp3 = (h_counter >= 320 && h_counter <= 399);
+    assign tp4 = (h_counter >= 400 && h_counter <= 479);
+    assign tp5 = (h_counter >= 480 && h_counter <= 559);
+    assign tp6 = (h_counter >= 560 && h_counter <= 639);
+    assign tp7 = (h_counter >= 640 && h_counter <= 719);
+    assign tp8 = (h_counter >= 720 && h_counter <= 799);
+    
+    wire [3:0] test_red, test_green, test_blue;
+    assign test_red =   (tp1) ? 4'b0000 : 
+                        (tp2) ? 4'b1111 :
+                        (tp3) ? 4'b1111 :
+                        (tp4) ? 4'b1111 :
+                        (tp5) ? 4'b0000 :
+                        (tp6) ? 4'b0000 :
+                        (tp7) ? 4'b0000 : 4'b1111;  
+                                               
+    assign test_green = (tp1) ? 4'b0000 : 
+                        (tp2) ? 4'b1111 :
+                        (tp3) ? 4'b0000 :
+                        (tp4) ? 4'b1111 :
+                        (tp5) ? 4'b1111 :
+                        (tp6) ? 4'b1111 :
+                        (tp7) ? 4'b0000 : 4'b0000;
+                        
+    assign test_blue =  (tp1) ? 4'b0000 : 
+                        (tp2) ? 4'b1111 :
+                        (tp3) ? 4'b0000 :
+                        (tp4) ? 4'b0000 :
+                        (tp5) ? 4'b0000 :
+                        (tp6) ? 4'b1111 :
+                        (tp7) ? 4'b1111 : 4'b1111;
+    
+    assign vga_red = (active_video) ? 
+        ( (test_state) ? test_red : current_pixel[11:8] )
+        :  0;
+        
+    assign vga_green = (active_video) ? 
+        ( (test_state) ? test_green : current_pixel[7:4] )
+        : 0;
+        
+    assign vga_blue = (active_video) ? 
+        ( (test_state) ? test_blue : current_pixel[3:0] )
+        : 0;
+
 
 endmodule
+

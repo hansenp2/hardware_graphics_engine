@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 // INPUT FIFO PARAMETERS
-`define C_IN_FIFO_DATA_WIDTH  42
+`define C_IN_FIFO_DATA_WIDTH  128
 `define C_IN_FIFO_DEPTH        4
 `define C_IN_FIFO_LOG2DEPTH    2
 
@@ -17,7 +17,7 @@ module circle_drawing_engine(
     input rst_,
 
     // input interface
-    input [41:0] in_op,
+    input [`C_IN_FIFO_DATA_WIDTH-1:0] in_op,
     input  in_rts,
     output in_rtr,
 
@@ -34,7 +34,7 @@ module circle_drawing_engine(
 );
 
     // input fifo for ops
-    wire [41:0] current_op;
+    wire [`C_IN_FIFO_DATA_WIDTH-1:0] current_op;
     wire fi_rts_cd, cd_rtr_fi;
     fifo #(`C_IN_FIFO_DATA_WIDTH, `C_IN_FIFO_DEPTH, `C_IN_FIFO_LOG2DEPTH) fi (
         .clk(clk),
@@ -68,10 +68,10 @@ module circle_drawing_engine(
         begin
             if (fi_rts_cd && cd_rtr_fi)
             begin
-                x0 <= current_op[41:32];
-                y0 <= current_op[31:22];
-                r <= current_op[21:12];
-                color <= current_op[11:0];
+                x0 <= {current_op[7:0], current_op[15:8]};
+                y0 <= {current_op[23:16], current_op[31:24]};
+                r <= {current_op[39:32], current_op[47:40]};
+                color <= {current_op[67:64], current_op[59:56], current_op[51:48]};
             end
         end
     end

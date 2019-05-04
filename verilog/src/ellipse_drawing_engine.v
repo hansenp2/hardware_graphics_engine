@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 // INPUT FIFO PARAMETERS
-`define E_IN_FIFO_DATA_WIDTH  52
+`define E_IN_FIFO_DATA_WIDTH  88
 `define E_IN_FIFO_DEPTH        4
 `define E_IN_FIFO_LOG2DEPTH    2
 
@@ -17,7 +17,7 @@ module ellipse_drawing_engine(
     input rst_,
 
     // input interface
-    input [51:0] in_op,
+    input [87:0] in_op,
     input  in_rts,
     output in_rtr,
 
@@ -34,7 +34,7 @@ module ellipse_drawing_engine(
 );
 
     // Input fifo for ops
-    wire [51:0] current_op;
+    wire [87:0] current_op;
     wire fi_rts_ed, ed_rtr_fi;
     fifo #(`E_IN_FIFO_DATA_WIDTH, `E_IN_FIFO_DEPTH, `E_IN_FIFO_LOG2DEPTH) fi (
         .clk(clk),
@@ -58,11 +58,11 @@ module ellipse_drawing_engine(
     ellipse_drawer ed(
         .clk(clk),
         .rst_(rst_),
-        .x0_in(current_op[51:42]),
-        .y0_in(current_op[41:32]),
-        .a_in(current_op[31:22]),
-        .b_in(current_op[21:12]),
-        .color(current_op[11:0]),
+        .x0_in({current_op[7:0], current_op[15:8]}),
+        .y0_in({current_op[23:16], current_op[31:24]}),
+        .a_in({current_op[39:32], current_op[47:40]}),
+        .b_in({current_op[55:48], current_op[63:56]}),
+        .color({current_op[77:64], current_op[75:72], current_op[83:80]}),
 
         .in_rts(fi_rts_ed),
         .in_rtr(ed_rtr_fi),

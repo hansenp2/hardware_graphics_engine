@@ -67,7 +67,7 @@ module fill_rect_data_gen_engine(
         end
         
         // Begin data generation when arb is rtr and this module is rts
-        else if (arb_in_rtr)
+        else if (1)//arb_in_rtr)
         begin
             // ------------------ Generation State Machine
             case (fill_rect_data_gen_eng_state)
@@ -138,7 +138,6 @@ module fill_rect_data_gen_engine(
     assign color_data = (rgb_idx==1'b0) ? rval: (rgb_idx==1'b1) ? gval : bval;
     assign rgb_shift = (arb_out_wben==8) ? 24: (arb_out_wben==4) ? 16: (arb_out_wben==2) ? 8: 0;
     assign arb_out_data = (color_data << rgb_shift) << ((col_cnt % 2) << 2);
-    
     
     assign internal_xfc = arb_in_rtr & arb_out_rts;
     

@@ -64,10 +64,10 @@ module data_fetch(
     assign out_data = queue[rd_addr]; 
     assign next_wr_addr_1 = wr_addr + 2; 
     
-    always@(posedge clk or negedge rst_ or posedge en)
+    always@(posedge clk or negedge rst_)
     begin
     
-        if (!rst_ || en)
+        if (!rst_)
         begin
             rd_addr <= 0;
             wr_addr <= 0;
@@ -76,11 +76,20 @@ module data_fetch(
             state   <= 3'b001;
         end
         
+//        else if (!en)
+//        begin
+//            rd_addr <= 0;
+//            wr_addr <= 0;
+//            mem_ptr <= 0;
+//            request_count <= 0;
+//            state   <= 3'b001;
+//        end
+        
         else 
         begin               
             
             if (in_xfc)
-                mem_ptr             <= (mem_ptr == `NUM_ADDRS-1) ? (0) : (mem_ptr + 1); 
+                mem_ptr <= (mem_ptr == `NUM_ADDRS-1) ? (0) : (mem_ptr + 1); 
           
             if (bcast_xfc)
             begin

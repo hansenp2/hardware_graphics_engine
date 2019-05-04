@@ -1,11 +1,11 @@
 `timescale 1ns / 1ps
 
-`define START_STATE         0
-`define INIT_STATE          1
-`define PRE_DRAW_STATE      2
-`define DRAW_STATE          3
-`define DRAW_SETUP_STATE    4
-`define END_STATE           5
+`define C_START_STATE         0
+`define C_INIT_STATE          1
+`define C_PRE_DRAW_STATE      2
+`define C_DRAW_STATE          3
+`define C_DRAW_SETUP_STATE    4
+`define C_END_STATE           5
 
 module circle_drawer(
 
@@ -14,9 +14,9 @@ module circle_drawer(
     input rst_,
 
     // circle values
-    input [9:0] x0_in,
-    input [9:0] y0_in,
-    input [9:0] r_in,
+    input [15:0] x0_in,
+    input [15:0] y0_in,
+    input [15:0] r_in,
     input [11:0] color,
 
     // input interface
@@ -48,40 +48,40 @@ module circle_drawer(
     assign out_xfc = out_rts & out_rtr;
 
     // Ready to recieve when in state 00
-    assign in_rtr  = (state == `START_STATE) ? (1) : (0);
+    assign in_rtr  = (state == `C_START_STATE) ? (1) : (0);
 
     // Ready to send when in state 01 or 10
-    assign out_rts = (state == `DRAW_STATE) ? (1) : (0);
+    assign out_rts = (state == `C_DRAW_STATE) ? (1) : (0);
 
     // State machine
     always @ (posedge clk or negedge rst_)
     begin
         if (!rst_)
-            state <= `START_STATE;
+            state <= `C_START_STATE;
 
         else
         begin
 
             // Start state
-            if (state == `START_STATE && in_xfc == 1)
-                state <= `INIT_STATE;
+            if (state == `C_START_STATE && in_xfc == 1)
+                state <= `C_INIT_STATE;
 
             // Init state
-            if (state == `INIT_STATE)
-                state <= `PRE_DRAW_STATE;
+            if (state == `C_INIT_STATE)
+                state <= `C_PRE_DRAW_STATE;
 
-            if (state == `PRE_DRAW_STATE)
-                state <= (x >= y) ? (`DRAW_STATE) : (`END_STATE);
+            if (state == `C_PRE_DRAW_STATE)
+                state <= (x >= y) ? (`C_DRAW_STATE) : (`C_END_STATE);
 
-            if (state == `DRAW_STATE && out_xfc == 1)
-                state <= `DRAW_SETUP_STATE;
+            if (state == `C_DRAW_STATE && out_xfc == 1)
+                state <= `C_DRAW_SETUP_STATE;
 
-            if (state == `DRAW_SETUP_STATE)
-                state <= `PRE_DRAW_STATE;
+            if (state == `C_DRAW_SETUP_STATE)
+                state <= `C_PRE_DRAW_STATE;
 
             // End state
-            else if (state == `END_STATE)
-                state <= `START_STATE;
+            else if (state == `C_END_STATE)
+                state <= `C_START_STATE;
         end
     end
 
@@ -100,7 +100,7 @@ module circle_drawer(
 
         else
         begin
-            if (state == `INIT_STATE)
+            if (state == `C_INIT_STATE)
             begin
                 x  <= r_in;
                 y  <= 0;
@@ -111,7 +111,7 @@ module circle_drawer(
             end
 
             //else if (state == `DRAW_STATE)
-            else if (state == `PRE_DRAW_STATE)
+            else if (state == `C_PRE_DRAW_STATE)
             begin
                 draw_x_0 <= x0_in + x; draw_y_0 <= y0_in + y;
                 draw_x_1 <= x0_in + y; draw_y_1 <= y0_in + x;
@@ -123,7 +123,7 @@ module circle_drawer(
                 draw_x_7 <= x0_in + x; draw_y_7 <= y0_in - y;
             end
 
-            else if (state == `DRAW_SETUP_STATE)
+            else if (state == `C_DRAW_SETUP_STATE)
             begin
                 // Write pixel data
                 // $display("*%d\t%d\t%d\t%d\t%d", x, y, $signed(dx), $signed(dy), $signed(error));
@@ -143,7 +143,7 @@ module circle_drawer(
                 end
             end
 
-            else if (state == `DRAW_STATE && out_xfc == 1)
+            else if (state == `C_DRAW_STATE && out_xfc == 1)
                 $display("(%d,%d), (%d,%d), (%d,%d), (%d,%d), (%d,%d), (%d,%d), (%d,%d), (%d,%d)",
                     x0_in + x, y0_in + y,
                     x0_in + y, y0_in + x,

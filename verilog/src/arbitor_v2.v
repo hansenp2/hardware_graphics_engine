@@ -1,7 +1,7 @@
 
 `timescale 1ns / 1ps
 
-`define NUM_ENGINES 3
+`define NUM_ENGINES 4
 `define DF_CYCLES   2
 
 module arbitor_v2(
@@ -46,11 +46,25 @@ module arbitor_v2(
     input [31:0] fillrect_wrdata,
     input fillrect_rts_in,
     output fillrect_rtr_out, 
-    input [3:0] fillrect_op
+    input [3:0] fillrect_op,
+        
+    // ellipse drawer connections
+    input [16:0] ellipsedrawer_addr,
+    input [31:0] ellipsedrawer_wrdata,
+    input ellipsedrawer_rts_in,
+    output ellipsedrawer_rtr_out, 
+    input [3:0] ellipsedrawer_op,
+    
+        // line drawer conncetions
+    input [16:0] softreset_addr,
+    input [31:0] softreset_wrdata,
+    input softreset_rts_in,
+    output softreset_rtr_out, 
+    input [3:0] softreset_op
 );
     
     // transer complete signals
-    reg [`NUM_ENGINES:0] select;
+    reg [`NUM_ENGINES+1:0] select;          // Plus one for soft reset
     
     wire fetch_xfc; 
     assign fetch_rtr_out = select[0];
@@ -68,9 +82,13 @@ module arbitor_v2(
     assign circledrawer_rtr_out = select[2];
     assign circledrawer_xfc = circledrawer_rts_in & circledrawer_rtr_out;
     
+    wire ellipsedrawer_xfc;
+    assign ellipsedrawer_rtr_out = select[4];
+    assign ellipsedrawer_xfc = ellipsedrawer_rts_in & ellipsedrawer_rtr_out;
+    
     // arbitor functionality
     reg [1:0] df_priority;
-    reg [`NUM_ENGINES-1:0] round_robin;
+    reg [`NUM_ENGINES:0] round_robin;
     
     assign bcast_data = mem_data_in;    
     
@@ -108,34 +126,44 @@ module arbitor_v2(
             // service data fetcher's request
             if (df_priority == 0 && fetch_rts_in == 1)
             begin
-                select <= 4'b001;
+                select <= 5'b00001;
             end
+//            else if (softreset_rts_in == 1)
+//            begin
+//                select <= 5'b1000;
+//            end
             
             // other client requests
             else
             begin
                 case (round_robin)
-                    `NUM_ENGINES'b001:
+                    `NUM_ENGINES'b0001:
                     begin
-                        select <= 4'b0010; 
+                        select <= 5'b00010; 
                         // $display("client 1");
                     end
                     
-                    `NUM_ENGINES'b010:
+                    `NUM_ENGINES'b0010:
                     begin
-                        select <= 4'b0100; 
+                        select <= 5'b00100; 
                         // $display("client 2");
                     end
                     
-                    `NUM_ENGINES'b100:
+                    `NUM_ENGINES'b0100:
                     begin
-                        select <= 4'b1000; 
+                        select <= 5'b01000; 
+                        // $display("client 2");
+                    end
+                    
+                    `NUM_ENGINES'b1000:
+                    begin
+                        select <= 5'b10000; 
                         // $display("client 2");
                     end
                     
                     default:
                     begin
-                        select <= 4'b0000; 
+                        select <= 5'b00000; 
                     end
                 endcase 
             end 
@@ -213,7 +241,7 @@ module arbitor_v2(
                     wben <= fetch_op;
                     mem_addr <= fetch_addr;
                     mem_data_out <= fetch_wrdata;
-                    bcast_delay_1 <= 4'b0001;
+                    bcast_delay_1 <= 5'b00001;
                 end
                 
                 else if (linedrawer_xfc)
@@ -221,7 +249,7 @@ module arbitor_v2(
                     wben <= linedrawer_op;
                     mem_addr <= linedrawer_addr;
                     mem_data_out <= linedrawer_wrdata;
-                    bcast_delay_1 <= (linedrawer_op == 4'b1111) ? 0 : 4'b0010; 
+                    bcast_delay_1 <= (linedrawer_op == 4'b1111) ? 0 : 5'b00010; 
                 end
                 
                 else if (fillrect_xfc)
@@ -229,7 +257,7 @@ module arbitor_v2(
                     wben <= fillrect_op;
                     mem_addr <= fillrect_addr;
                     mem_data_out <= fillrect_wrdata;
-                    bcast_delay_1 <= (fillrect_op == 4'b1111) ? 0 : 4'b1000; 
+                    bcast_delay_1 <= (fillrect_op == 4'b1111) ? 0 : 5'b01000; 
                 end
                 
                 else if (circledrawer_xfc)
@@ -237,7 +265,15 @@ module arbitor_v2(
                     wben <= circledrawer_op;
                     mem_addr <= circledrawer_addr;
                     mem_data_out <= circledrawer_wrdata;
-                    bcast_delay_1 <= (circledrawer_op == 4'b1111) ? 0 : 4'b0100;
+                    bcast_delay_1 <= (circledrawer_op == 4'b1111) ? 0 : 5'b10000;
+                end
+                
+                else if (ellipsedrawer_xfc)
+                begin
+                    wben <= ellipsedrawer_op;
+                    mem_addr <= ellipsedrawer_addr;
+                    mem_data_out <= ellipsedrawer_wrdata;
+                    bcast_delay_1 <= (ellipsedrawer_op == 4'b1111) ? 0 : 5'b00100;
                 end
                 
                 else
